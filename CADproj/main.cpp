@@ -1,7 +1,11 @@
+#define __MAIN_GLOBALS
+
 #include <iostream>
 #include <graphics.h>
 #include <conio.h>
 #include <Windows.h>
+
+#include "main.h"
 
 using namespace::std;
 
@@ -49,6 +53,7 @@ int main()
 	{
 		currentMouse=GetMouseMsg();
 		if(previousMouse.x==currentMouse.x&&previousMouse.y==currentMouse.y)continue;
+
 		i++;
 		_stprintf_s(s,127,_T("%d,%d,%d"),currentMouse.x,currentMouse.y,currentMouse.wheel);
 		outtextxy((i*20)/720*120,(i*20)%720,s);
