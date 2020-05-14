@@ -1,7 +1,7 @@
 #ifndef __CADELEMENTS_H
 #define __CADELEMENTS_H
 
-#include <string>
+#include "main.h"
 
 using namespace std;
 
