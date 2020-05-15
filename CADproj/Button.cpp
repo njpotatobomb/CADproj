@@ -4,23 +4,23 @@
 
 
 
-Button::Button(int px,int py,const char* ptext)
+Button::Button(int px,int py,LPCTSTR ptext)
 {
 	location=CPoint(px,py);
 
-	//convert const char* to TCHAR*,https://www.cnblogs.com/imzhstar/p/4107558.html
-	int size=MultiByteToWideChar(0,0,ptext,-1,NULL,0);
-	TCHARtext=new TCHAR[size];
-	MultiByteToWideChar(0,0,ptext,-1,TCHARtext,size);
+	text=new TCHAR[_tcslen(ptext)+1];
+	_tcscpy_s(text,_tcslen(ptext)+1,ptext);
 
-	text=new char[strlen(ptext)+1];
-	strcpy_s(text,strlen(ptext)+1,ptext);
+	height=TEXTHEIGHT;
+	width=int(_tcslen(text)*TEXTHEIGHT*0.5);                //textwidth() crashes for no reason
+
+	area={location.x,location.y,location.x+width,location.y+height};
+
 	mouseOnFlag=false;
 }
 
 Button::~Button()
 {
-	delete TCHARtext;
 	delete text;
 }
 
@@ -39,7 +39,9 @@ void Button::draw()
 		setbkcolor(BLACK);
 		settextcolor(WHITE);
 	}
-	outtextxy(location.x,location.y,TCHARtext);
+
+	//outtextxy(location.x,location.y,text);
+	drawtext(text,&area,DT_CENTER|DT_VCENTER|DT_SINGLELINE);
 
 	setbkcolor(bkcolor);
 	settextcolor(textcolor);
@@ -47,12 +49,17 @@ void Button::draw()
 
 bool Button::isWithinRegion(CPoint point)
 {
-	return (pow(point.x-location.x,2)+pow(point.y-location.y,2))<=(900);
+	return point.x>=location.x&&point.x<=location.x+width&&point.y>=location.y&&point.y<=location.y+height;
 }
 
 void Button::setMouseOnFlag(bool state)
 {
 	mouseOnFlag=state;
+}
+
+CPoint Button::getTopRight()
+{
+	return CPoint(location.x+width,location.y);
 }
 
 

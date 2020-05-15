@@ -21,7 +21,7 @@ vector<Button*> buttons;
   */
 int main()
 {
-	initgraph(1280,720);
+	initgraph(SCREENWIDTH,SCREENHEIGHT);
 	HWND hWnd=GetHWnd();
 	SetWindowText(hWnd,L"Crappy CAD");
 
@@ -38,7 +38,7 @@ int main()
 
 	MOUSEMSG mouse=GetMouseMsg();
 	MOUSEMSG premouse=mouse;
-	int i=0;
+
 	while(1)
 	{
 		mouse=GetMouseMsg();
@@ -86,13 +86,30 @@ int main()
   */
 void init()
 {
-	for(int i=0;i<sizeof(menu)/sizeof(Button);i++)
-		buttons.push_back(&menu[i]);
+	CPoint coord(0,0);
+	Button* pNewButton;
+	for(auto& it:topmenu)    //better use &it in for each!!!
+	{
+		pNewButton=new Button(coord.x,coord.y,it);
+		buttons.push_back(pNewButton);
+		coord=buttons.back()->getTopRight();
+	}
 
-	//for(auto it:menu)
-	//	buttons.push_back(&it);
-	//crashes,call ~Button() for no reason
+	coord=CPoint(0,SCREENHEIGHT-TEXTHEIGHT);
+	for(auto& it:bottommenu)    //better use &it in for each!!!
+	{
+		pNewButton=new Button(coord.x,coord.y,it);
+		buttons.push_back(pNewButton);
+		coord=buttons.back()->getTopRight();
+	}
 
+	LOGFONT font;
+	gettextstyle(&font);
+	font.lfHeight=TEXTHEIGHT;
+	_tcscpy_s(font.lfFaceName,L"Microsoft Yahei UI");	
+	font.lfQuality=ANTIALIASED_QUALITY;
+	font.lfWeight=FW_LIGHT;
+	settextstyle(&font);
 }
 
 
@@ -108,8 +125,11 @@ void refreshScreen()
 	cleardevice();
 	BeginBatchDraw();
 
-	for(auto it:buttons)
+	for(auto& it:buttons)
 		it->draw();
+
+	line(0,TEXTHEIGHT,SCREENWIDTH,TEXTHEIGHT);
+	line(0,SCREENHEIGHT-TEXTHEIGHT,SCREENWIDTH,SCREENHEIGHT-TEXTHEIGHT);
 
 	FlushBatchDraw();
 	EndBatchDraw();

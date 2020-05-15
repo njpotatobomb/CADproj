@@ -12,15 +12,19 @@
 #include <string>
 #include <atltypes.h>
 #include <math.h>
+#include <windows.h>
 
 
 
 //in pixels
 //horizontal=width=x,vertical=height=y
-#define SCREENWIDTH (1280)
-#define SCREENHEIGHT (720)
+#define TEXTHEIGHT (24)
 #define CANVASWIDTH (1280)
 #define CANVASHEIGHT (720)
+#define SCREENWIDTH (CANVASWIDTH)
+#define SCREENHEIGHT (CANVASHEIGHT+TEXTHEIGHT*2+2)
+
+
 
 
 
