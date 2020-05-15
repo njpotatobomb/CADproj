@@ -33,23 +33,29 @@ int main()
 	//_stprintf_s(s,127,_T("%f,%f"),px,py);
 	//outtextxy(0,0,s);
 
-	//MOUSEMSG currentMouse=GetMouseMsg();
-	//MOUSEMSG previousMouse=currentMouse;
-	//int i=0;
-	//while(1)
-	//{
-	//	currentMouse=GetMouseMsg();
-	//	if(previousMouse.x==currentMouse.x&&previousMouse.y==currentMouse.y)continue;
-
-	//	i++;
-	//	_stprintf_s(s,127,_T("%d,%d,%d"),currentMouse.x,currentMouse.y,currentMouse.wheel);
-	//	outtextxy((i*20)/720*120,(i*20)%720,s);
-
-	//	previousMouse=currentMouse;
-	//}
-
 	init();
-	refreshScreen();
+
+
+	MOUSEMSG mouse=GetMouseMsg();
+	MOUSEMSG premouse=mouse;
+	int i=0;
+	while(1)
+	{
+		mouse=GetMouseMsg();
+		if(premouse.x==mouse.x&&premouse.y==mouse.y)continue;
+
+		//i++;
+		//_stprintf_s(s,127,_T("%d,%d,%d"),currentMouse.x,currentMouse.y,currentMouse.wheel);
+		//outtextxy((i*20)/720*120,(i*20)%720,s);
+
+		for(auto it:buttons)
+			it->setMouseOnFlag(it->isWithinRegion(CPoint(mouse.x,mouse.y)));
+
+		refreshScreen();
+
+		premouse=mouse;
+	}
+
 	//outtextxy(300,300,_T("oops"));
 
 

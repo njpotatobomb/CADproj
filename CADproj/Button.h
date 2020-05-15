@@ -13,7 +13,8 @@ public:
 	Button(int px,int py,const char* ptext);
 	~Button();
 	void draw();
-	bool isWithinRegion();
+	bool isWithinRegion(CPoint point);
+	void setMouseOnFlag(bool state);
 
 protected:
 	CPoint location;
@@ -21,6 +22,7 @@ protected:
 	//int height;
 	TCHAR* TCHARtext=nullptr;
 	char* text=nullptr;
+	bool mouseOnFlag;
 
 };
 
