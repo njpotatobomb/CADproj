@@ -4,7 +4,10 @@
 #include "main.h"
 
 
-
+/**
+  * @brief      button class
+  * @author	 njpotatobomb
+  */
 class Button
 {
 public:

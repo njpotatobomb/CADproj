@@ -3,6 +3,10 @@
 #include "Button.h"
 
 
+/**
+  * @brief      button functions
+  * @author	 njpotatobomb
+  */
 
 Button::Button(int px,int py,LPCTSTR ptext)
 {

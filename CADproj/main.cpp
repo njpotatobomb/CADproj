@@ -11,6 +11,7 @@ using namespace::std;
 vector<CADElement*> objects;
 vector<Button*> buttons;
 
+int fps=0;
 
 
 /**
@@ -36,40 +37,37 @@ int main()
 	init();
 
 
-	MOUSEMSG mouse=GetMouseMsg();
-	MOUSEMSG premouse=mouse;
 
+	int fpscounter=0;
+	clock_t curtime=0,pretime=0;
+	MOUSEMSG curmouse=GetMouseMsg();
+	MOUSEMSG premouse=curmouse;
 	while(1)
 	{
-		mouse=GetMouseMsg();
-		if(premouse.x==mouse.x&&premouse.y==mouse.y)continue;
+		curmouse=GetMouseMsg();
+		if(!(premouse.x==curmouse.x&&premouse.y==curmouse.y))
+		{
+			//i++;
+			//_stprintf_s(s,127,_T("%d,%d,%d"),currentMouse.x,currentMouse.y,currentMouse.wheel);
+			//outtextxy((i*20)/720*120,(i*20)%720,s);
 
-		//i++;
-		//_stprintf_s(s,127,_T("%d,%d,%d"),currentMouse.x,currentMouse.y,currentMouse.wheel);
-		//outtextxy((i*20)/720*120,(i*20)%720,s);
+			for(auto it:buttons)
+				it->setMouseOnFlag(it->isWithinRegion(CPoint(curmouse.x,curmouse.y)));
+		
+			refreshScreen();
 
-		for(auto it:buttons)
-			it->setMouseOnFlag(it->isWithinRegion(CPoint(mouse.x,mouse.y)));
-
-		refreshScreen();
-
-		premouse=mouse;
+		}
+		fpscounter++;
+		if(fpscounter%20==0)
+		{
+			curtime=clock();
+			fps=int(20.0*CLOCKS_PER_SEC/(curtime-pretime));
+			pretime=clock();
+		}
+		premouse=curmouse;
 	}
 
 	//outtextxy(300,300,_T("oops"));
-
-
-	POINT p;
-	POINT psta{100,100};
-	while(1)
-	{
-		GetCursorPos(&p);
-		psta.x=100;
-		psta.y=100;
-		ClientToScreen(hWnd,&psta);
-		SetCursorPos(psta.x,psta.y);
-		Sleep(3000);
-	}
 
 	cin.get();
 	closegraph();
@@ -96,7 +94,7 @@ void init()
 	}
 
 	coord=CPoint(0,SCREENHEIGHT-TEXTHEIGHT);
-	for(auto& it:bottommenu)    //better use &it in for each!!!
+	for(auto& it:bottommenu)
 	{
 		pNewButton=new Button(coord.x,coord.y,it);
 		buttons.push_back(pNewButton);
@@ -125,12 +123,38 @@ void refreshScreen()
 	cleardevice();
 	BeginBatchDraw();
 
+	for(auto& it:objects)
+		it->draw();
+
+	line(0,TEXTHEIGHT,SCREENWIDTH-1,TEXTHEIGHT);
+	line(0,SCREENHEIGHT-TEXTHEIGHT-1,SCREENWIDTH-1,SCREENHEIGHT-TEXTHEIGHT-1);
+	setfillcolor(BLACK);
+	solidrectangle(0,0,SCREENWIDTH-1,TEXTHEIGHT-1);
+	solidrectangle(0,SCREENHEIGHT-TEXTHEIGHT,SCREENWIDTH-1,SCREENHEIGHT-1);
+	setfillcolor(WHITE);
+
 	for(auto& it:buttons)
 		it->draw();
 
-	line(0,TEXTHEIGHT,SCREENWIDTH,TEXTHEIGHT);
-	line(0,SCREENHEIGHT-TEXTHEIGHT,SCREENWIDTH,SCREENHEIGHT-TEXTHEIGHT);
+	static TCHAR s[15];
+	_stprintf_s(s,15,_T("%03dfps"),fps);
+	outtextxy(SCREENWIDTH-60,SCREENHEIGHT-TEXTHEIGHT,s);
 
 	FlushBatchDraw();
 	EndBatchDraw();
+}
+
+
+
+/**
+  * @brief      move mouse to point,relative to screen
+  * @param   none
+  * @retval     none
+  * @author	 njpotatobomb
+  */
+void moveMouseTo(CPoint point)
+{
+	static HWND hWnd=GetHWnd();
+	ClientToScreen(hWnd,&point);
+	SetCursorPos(point.x,point.y);
 }

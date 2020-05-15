@@ -12,7 +12,7 @@
 #include <string>
 #include <atltypes.h>
 #include <math.h>
-#include <windows.h>
+#include <time.h>
 
 
 
@@ -30,6 +30,7 @@
 
 void init();
 void refreshScreen();
+void moveMouseTo(CPoint point);
 
 
 
