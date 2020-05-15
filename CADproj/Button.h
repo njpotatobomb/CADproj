@@ -3,6 +3,8 @@
 
 #include "main.h"
 
+#define BUTTONTEXTHEIGHT (18)
+
 
 
 class Button
@@ -22,10 +24,18 @@ protected:
 
 };
 
-static Button menu[3]={
+static Button menu[]={
 	Button(0,0,"open"),
 	Button(50,0,"save"),
 	Button(100,0,"exit"),
+	Button(0,SCREENHEIGHT-BUTTONTEXTHEIGHT,"add line"),
+	Button(120,SCREENHEIGHT-BUTTONTEXTHEIGHT,"add rectangle"),
+	Button(240,SCREENHEIGHT-BUTTONTEXTHEIGHT,"add circle"),
+	Button(360,SCREENHEIGHT-BUTTONTEXTHEIGHT,"add polygon"),
+	Button(480,SCREENHEIGHT-BUTTONTEXTHEIGHT,"modify selection"),
+	Button(600,SCREENHEIGHT-BUTTONTEXTHEIGHT,"move selection"),
+	Button(720,SCREENHEIGHT-BUTTONTEXTHEIGHT,"delete selection"),
+	Button(840,SCREENHEIGHT-BUTTONTEXTHEIGHT,"delete all"),
 };
 
 

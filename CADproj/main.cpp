@@ -22,6 +22,8 @@ vector<Button*> buttons;
 int main()
 {
 	initgraph(1280,720);
+	HWND hWnd=GetHWnd();
+	SetWindowText(hWnd,L"Crappy CAD");
 
 	//setaspectratio(1,1);
 	//float px=0;
@@ -49,6 +51,19 @@ int main()
 	init();
 	refreshScreen();
 	//outtextxy(300,300,_T("oops"));
+
+
+	POINT p;
+	POINT psta{100,100};
+	while(1)
+	{
+		GetCursorPos(&p);
+		psta.x=100;
+		psta.y=100;
+		ClientToScreen(hWnd,&psta);
+		SetCursorPos(psta.x,psta.y);
+		Sleep(3000);
+	}
 
 	cin.get();
 	closegraph();

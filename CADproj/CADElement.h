@@ -20,9 +20,14 @@ public:
 	virtual void move(float dx,float dy)=0;
 	virtual void modify()=0;
 	virtual void save(string path)=0;
+	virtual void calculateOrigin()=0;
+
+	const CPoint& getOrigin();
+
 
 protected:
 	int id;
+	CPoint origin;
 
 };
 
