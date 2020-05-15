@@ -14,11 +14,11 @@ public:
 	bool isWithinRegion();
 
 protected:
-	int x=0;
-	int y=0;
+	CPoint location;
 	//int width;
 	//int height;
-	TCHAR* text=nullptr;
+	TCHAR* TCHARtext=nullptr;
+	char* text=nullptr;
 
 };
 

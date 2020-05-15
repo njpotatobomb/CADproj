@@ -10,6 +10,7 @@
 #include <vector>
 #include <tchar.h>
 #include <string>
+#include <atltypes.h>
 
 
 

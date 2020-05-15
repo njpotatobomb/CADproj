@@ -68,8 +68,8 @@ void init()
 	for(int i=0;i<sizeof(menu)/sizeof(Button);i++)
 		buttons.push_back(&menu[i]);
 
-	/*for(auto it:menu)
-		buttons.push_back(&it);*/
+	//for(auto it:menu)
+	//	buttons.push_back(&it);
 	//crashes,call ~Button() for no reason
 
 }
@@ -85,9 +85,11 @@ void init()
 void refreshScreen()
 {
 	cleardevice();
-	//BeginBatchDraw();
+	BeginBatchDraw();
+
 	for(auto it:buttons)
 		it->draw();
-	//FlushBatchDraw();
-	//EndBatchDraw();
+
+	FlushBatchDraw();
+	EndBatchDraw();
 }

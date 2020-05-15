@@ -21,7 +21,6 @@ public:
 	virtual void modify()=0;
 	virtual void save(string path)=0;
 
-
 protected:
 	int id;
 

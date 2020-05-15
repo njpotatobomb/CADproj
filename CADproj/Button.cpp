@@ -6,23 +6,27 @@
 
 Button::Button(int px,int py,const char* ptext)
 {
-	x=px;
-	y=py;
+	location=CPoint(px,py);
+
 	//convert const char* to TCHAR*,https://www.cnblogs.com/imzhstar/p/4107558.html
 	int size=MultiByteToWideChar(0,0,ptext,-1,NULL,0);
-	text=new TCHAR[size];
-	MultiByteToWideChar(0,0,ptext,-1,text,size);
+	TCHARtext=new TCHAR[size];
+	MultiByteToWideChar(0,0,ptext,-1,TCHARtext,size);
+
+	text=new char[strlen(ptext)+1];
+	strcpy_s(text,strlen(ptext)+1,ptext);
 }
 
 Button::~Button()
 {
+	delete TCHARtext;
 	delete text;
 }
 
 void Button::draw()
 {
 	setbkcolor(BLACK);
-	outtextxy(x,y,text);
+	outtextxy(location.x,location.y,TCHARtext);
 }
 
 bool Button::isWithinRegion()
