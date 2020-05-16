@@ -17,7 +17,7 @@ public:
 
 	virtual void init()=0;
 	virtual void draw()=0;
-	virtual void move(float dx,float dy)=0;
+	virtual void move(int dx,int dy)=0;
 	virtual void modify()=0;
 	virtual void save(string path)=0;
 	virtual void calculateOrigin()=0;
@@ -31,6 +31,24 @@ protected:
 
 };
 
+
+
+class CADLine:public CADElement
+{
+public:
+	CADLine();
+	~CADLine();
+
+	void init();
+	void draw();
+	void move(int dx,int dy);
+	void modify();
+	void save(string path);
+	void calculateOrigin();
+
+protected:
+	CPoint start,end;
+};
 
 
 #endif

@@ -11,7 +11,7 @@ using namespace::std;
 vector<CADElement*> objects;
 vector<Button*> buttons;
 
-int fps=0;
+//int fps=0;
 
 
 /**
@@ -35,36 +35,136 @@ int main()
 	//outtextxy(0,0,s);
 
 	init();
+	refreshScreen();
 
 
-
-	int fpscounter=0;
-	clock_t curtime=0,pretime=0;
-	MOUSEMSG curmouse=GetMouseMsg();
-	MOUSEMSG premouse=curmouse;
+	bool lbuttondownflag=false;
+	//int fpscounter=0;
+	//clock_t curtime=0,pretime=0;
+	MOUSEMSG mouse;
 	while(1)
 	{
-		curmouse=GetMouseMsg();
-		if(!(premouse.x==curmouse.x&&premouse.y==curmouse.y))
-		{
-			//i++;
-			//_stprintf_s(s,127,_T("%d,%d,%d"),currentMouse.x,currentMouse.y,currentMouse.wheel);
-			//outtextxy((i*20)/720*120,(i*20)%720,s);
+		mouse=GetMouseMsg();
 
-			for(auto it:buttons)
-				it->setMouseOnFlag(it->isWithinRegion(CPoint(curmouse.x,curmouse.y)));
+		for(auto& it:buttons)
+			it->setMouseOnFlag(it->isWithinRegion(CPoint(mouse.x,mouse.y)));
+
+		switch(mouse.uMsg)
+		{
+		case WM_LBUTTONDOWN:
+			lbuttondownflag=true;
+			break;
+
+		case WM_LBUTTONUP:
+			if(lbuttondownflag)
+			{
+				lbuttondownflag=false;
+
+				//left button pressed
+				for(auto& it:buttons)
+				{
+					if(it->isMouseOn())
+					{
+						switch(it->getId())
+						{
+						case 00:
+						{
+							//open
+
+							break;
+						}
+						case 01:
+						{
+							//save
+
+							break;
+						}
+						case 02:
+						{
+							//exit
+
+							break;
+						}
+						case 10:
+						{	
+							//add line
+
+							CADLine* pNewLine=new CADLine();
+							objects.push_back(pNewLine);
+							pNewLine->init();
+
+							break;
+						}
+						case 11:
+						{	
+							//add rectangle
+
+							break;
+						}
+						case 12:
+						{	
+							//add circle
+
+							break;
+						}
+						case 13:
+						{	
+							//add polygon
+
+							break;
+						}
+						case 14:
+						{	
+							//modify
+
+							break;
+						}
+						case 15:
+						{	
+							//move
+
+							break;
+						}
+						case 16:
+						{	
+							//delete
+
+							break;
+						}
+						case 17:
+						{	
+							//delete all
+
+							break;
+						}
+						default:
+						{
+
+							break;
+						}
+
+						}
+					}
+				}
+
+			}
+			break;
+
+		case WM_LBUTTONDBLCLK:
+
+			break;
+
+		}
 		
-			refreshScreen();
+		refreshScreen();
 
-		}
-		fpscounter++;
-		if(fpscounter%20==0)
-		{
-			curtime=clock();
-			fps=int(20.0*CLOCKS_PER_SEC/(curtime-pretime));
-			pretime=clock();
-		}
-		premouse=curmouse;
+		//fpscounter++;
+		//if(fpscounter%20==0)
+		//{
+		//	curtime=clock();
+		//	fps=int(20.0*CLOCKS_PER_SEC/(curtime-pretime));
+		//	pretime=clock();
+		//}
 	}
 
 	//outtextxy(300,300,_T("oops"));
@@ -84,21 +184,25 @@ int main()
   */
 void init()
 {
+	int i=0;
 	CPoint coord(0,0);
 	Button* pNewButton;
 	for(auto& it:topmenu)    //better use &it in for each!!!
 	{
-		pNewButton=new Button(coord.x,coord.y,it);
+		pNewButton=new Button(00+i,coord.x,coord.y,it);
 		buttons.push_back(pNewButton);
 		coord=buttons.back()->getTopRight();
+		i++;
 	}
 
+	i=0;
 	coord=CPoint(0,SCREENHEIGHT-TEXTHEIGHT);
 	for(auto& it:bottommenu)
 	{
-		pNewButton=new Button(coord.x,coord.y,it);
+		pNewButton=new Button(10+i,coord.x,coord.y,it);
 		buttons.push_back(pNewButton);
 		coord=buttons.back()->getTopRight();
+		i++;
 	}
 
 	LOGFONT font;
@@ -123,9 +227,11 @@ void refreshScreen()
 	cleardevice();
 	BeginBatchDraw();
 
+	//draw cad elements
 	for(auto& it:objects)
 		it->draw();
 
+	//draw border lines
 	line(0,TEXTHEIGHT,SCREENWIDTH-1,TEXTHEIGHT);
 	line(0,SCREENHEIGHT-TEXTHEIGHT-1,SCREENWIDTH-1,SCREENHEIGHT-TEXTHEIGHT-1);
 	setfillcolor(BLACK);
@@ -133,12 +239,14 @@ void refreshScreen()
 	solidrectangle(0,SCREENHEIGHT-TEXTHEIGHT,SCREENWIDTH-1,SCREENHEIGHT-1);
 	setfillcolor(WHITE);
 
+	//draw buttons
 	for(auto& it:buttons)
 		it->draw();
 
-	static TCHAR s[15];
-	_stprintf_s(s,15,_T("%03dfps"),fps);
-	outtextxy(SCREENWIDTH-60,SCREENHEIGHT-TEXTHEIGHT,s);
+	//draw fps counter
+	//static TCHAR s[15];
+	//_stprintf_s(s,15,_T("%03dfps"),fps);
+	//outtextxy(SCREENWIDTH-60,SCREENHEIGHT-TEXTHEIGHT,s);
 
 	FlushBatchDraw();
 	EndBatchDraw();

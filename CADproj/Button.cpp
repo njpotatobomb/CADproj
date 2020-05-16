@@ -8,7 +8,7 @@
   * @author	 njpotatobomb
   */
 
-Button::Button(int px,int py,LPCTSTR ptext)
+Button::Button(int pid,int px,int py,LPCTSTR ptext)
 {
 	location=CPoint(px,py);
 
@@ -16,11 +16,13 @@ Button::Button(int px,int py,LPCTSTR ptext)
 	_tcscpy_s(text,_tcslen(ptext)+1,ptext);
 
 	height=TEXTHEIGHT;
-	width=int(_tcslen(text)*TEXTHEIGHT*0.5);                //textwidth() crashes for no reason
+	width=int(_tcslen(text)*TEXTHEIGHT*0.6);                //textwidth() crashes for no reason
 
 	area={location.x,location.y,location.x+width,location.y+height};
 
 	mouseOnFlag=false;
+
+	id=pid;
 }
 
 Button::~Button()
@@ -45,7 +47,7 @@ void Button::draw()
 	}
 
 	//outtextxy(location.x,location.y,text);
-	drawtext(text,&area,DT_CENTER|DT_VCENTER|DT_SINGLELINE);
+	drawtext(text,&area,DT_LEFT|DT_VCENTER|DT_SINGLELINE);
 
 	setbkcolor(bkcolor);
 	settextcolor(textcolor);
@@ -59,6 +61,16 @@ bool Button::isWithinRegion(CPoint point)
 void Button::setMouseOnFlag(bool state)
 {
 	mouseOnFlag=state;
+}
+
+bool Button::isMouseOn()
+{
+	return mouseOnFlag;
+}
+
+int Button::getId()
+{
+	return id;
 }
 
 CPoint Button::getTopRight()
