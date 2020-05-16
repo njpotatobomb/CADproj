@@ -50,7 +50,7 @@ CADLine::~CADLine()
 
 void CADLine::init()
 {
-	moveMouseTo(CPoint(SCREENWIDTH/2,SCREENHEIGHT/2));
+	moveMouseTo(SCREENWIDTH/2,SCREENHEIGHT/2);
 
 	bool lbuttondownflag=false;
 	int pointcount=0;

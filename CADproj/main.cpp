@@ -7,9 +7,10 @@
 using namespace::std;
 
 
-
+//uses push_back,so back means upper layer
 vector<CADElement*> objects;
 vector<Button*> buttons;
+//remeber to delete in exit functionality
 
 //int fps=0;
 
@@ -18,7 +19,7 @@ vector<Button*> buttons;
   * @brief      main
   * @param   none
   * @retval     none
-  * @author
+  * @author	 njpotatobomb
   */
 int main()
 {
@@ -47,7 +48,7 @@ int main()
 		mouse=GetMouseMsg();
 
 		for(auto& it:buttons)
-			it->setMouseOnFlag(it->isWithinRegion(CPoint(mouse.x,mouse.y)));
+			it->setMouseOnFlag(it->isWithinRegion(mouse.x,mouse.y));
 
 		switch(mouse.uMsg)
 		{
@@ -82,6 +83,12 @@ int main()
 						case 02:
 						{
 							//exit
+
+							for(auto& it:objects)
+								delete it;
+							for(auto& it:buttons)
+								delete it;
+							return 0;
 
 							break;
 						}
@@ -260,9 +267,10 @@ void refreshScreen()
   * @retval     none
   * @author	 njpotatobomb
   */
-void moveMouseTo(CPoint point)
+void moveMouseTo(int px,int py)
 {
 	static HWND hWnd=GetHWnd();
+	CPoint point(px,py);
 	ClientToScreen(hWnd,&point);
 	SetCursorPos(point.x,point.y);
 }

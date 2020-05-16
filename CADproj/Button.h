@@ -14,7 +14,7 @@ public:
 	Button(int pid,int px,int py,LPCTSTR ptext);
 	~Button();
 	void draw();
-	bool isWithinRegion(CPoint point);
+	bool isWithinRegion(int px,int py);
 	void setMouseOnFlag(bool state);
 	bool isMouseOn();
 	int getId();

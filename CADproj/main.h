@@ -30,7 +30,7 @@
 
 void init();
 void refreshScreen();
-void moveMouseTo(CPoint point);
+void moveMouseTo(int px,int py);
 
 
 

@@ -53,9 +53,9 @@ void Button::draw()
 	settextcolor(textcolor);
 }
 
-bool Button::isWithinRegion(CPoint point)
+bool Button::isWithinRegion(int px,int py)
 {
-	return point.x>=location.x&&point.x<=location.x+width&&point.y>=location.y&&point.y<=location.y+height;
+	return px>=location.x&&px<=location.x+width&&py>=location.y&&py<=location.y+height;
 }
 
 void Button::setMouseOnFlag(bool state)
