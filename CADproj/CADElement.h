@@ -66,6 +66,6 @@ public:
 	void calculateOrigin();
 
 protected:
-	CPoint topleft, bottomright;
+	CPoint start, end;
 };
 #endif

@@ -106,7 +106,9 @@ int main()
 						}
 						case 11:
 						{
-							//add rectangle
+							CADRectangle* pNewRectangle = new CADRectangle();
+							objects.push_back(pNewRectangle);
+							pNewRectangle->init();
 
 							CADRectangle* pNewRectangle=new CADRectangle();
 							objects.push_back(pNewRectangle);
