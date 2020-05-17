@@ -134,6 +134,14 @@ void CADLine::calculateOrigin()
 }
 
 
+
+
+
+/**
+  * @brief      CADLine functions
+  * @author	 SadCloud55
+  */
+
 CADRectangle::CADRectangle() :CADElement()
 {
 	topleft = bottomright = CPoint(0, 0);

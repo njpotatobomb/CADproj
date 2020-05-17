@@ -108,6 +108,10 @@ int main()
 						{
 							//add rectangle
 
+							CADRectangle* pNewRectangle=new CADRectangle();
+							objects.push_back(pNewRectangle);
+							pNewRectangle->init();
+
 							break;
 						}
 						case 12:
