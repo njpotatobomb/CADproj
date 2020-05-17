@@ -53,10 +53,12 @@ int main()
 		switch(mouse.uMsg)
 		{
 		case WM_LBUTTONDOWN:
+		{
 			lbuttondownflag=true;
 			break;
-
+		}
 		case WM_LBUTTONUP:
+		{
 			if(lbuttondownflag)
 			{
 				lbuttondownflag=false;
@@ -93,7 +95,7 @@ int main()
 							break;
 						}
 						case 10:
-						{	
+						{
 							//add line
 
 							CADLine* pNewLine=new CADLine();
@@ -103,43 +105,43 @@ int main()
 							break;
 						}
 						case 11:
-						{	
+						{
 							//add rectangle
 
 							break;
 						}
 						case 12:
-						{	
+						{
 							//add circle
 
 							break;
 						}
 						case 13:
-						{	
+						{
 							//add polygon
 
 							break;
 						}
 						case 14:
-						{	
+						{
 							//modify
 
 							break;
 						}
 						case 15:
-						{	
+						{
 							//move
 
 							break;
 						}
 						case 16:
-						{	
+						{
 							//delete
 
 							break;
 						}
 						case 17:
-						{	
+						{
 							//delete all
 
 							break;
@@ -156,11 +158,12 @@ int main()
 
 			}
 			break;
-
+		}
 		case WM_LBUTTONDBLCLK:
+		{
 
 			break;
-
+		}
 		}
 		
 		refreshScreen();

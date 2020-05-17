@@ -29,6 +29,11 @@ const CPoint& CADElement::getOrigin()
 	return origin;
 }
 
+int CADElement::getId()
+{
+	return id;
+}
+
 
 
 
@@ -52,6 +57,9 @@ void CADLine::init()
 {
 	moveMouseTo(SCREENWIDTH/2,SCREENHEIGHT/2);
 
+	TCHAR s[127];
+	InputBox(s,127,L"?",L"??",L"????",0,0,false);
+
 	bool lbuttondownflag=false;
 	int pointcount=0;
 	MOUSEMSG mouse;
@@ -62,10 +70,12 @@ void CADLine::init()
 		switch(mouse.uMsg)
 		{
 		case WM_LBUTTONDOWN:
+		{
 			lbuttondownflag=true;
 			break;
-
+		}
 		case WM_LBUTTONUP:
+		{
 			if(lbuttondownflag)
 			{
 				lbuttondownflag=false;
@@ -75,17 +85,18 @@ void CADLine::init()
 				if(pointcount==1)
 				{
 					start=CPoint(mouse.x,mouse.y);
-				}else if(pointcount==2)
+				} else if(pointcount==2)
 				{
 					end=CPoint(mouse.x,mouse.y);
 				}
 			}
 			break;
-
+		}
 		case WM_LBUTTONDBLCLK:
+		{
 
 			break;
-
+		}
 		}
 
 		if(pointcount>0&&pointcount<2)

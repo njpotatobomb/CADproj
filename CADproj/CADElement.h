@@ -23,6 +23,7 @@ public:
 	virtual void calculateOrigin()=0;
 
 	const CPoint& getOrigin();
+	int getId();
 
 
 protected:
@@ -48,6 +49,7 @@ public:
 
 protected:
 	CPoint start,end;
+
 };
 
 
