@@ -52,5 +52,20 @@ protected:
 
 };
 
+class CADRectangle :public CADElement
+{
+public:
+	CADRectangle();
+	~CADRectangle();
 
+	void init();
+	void draw();
+	void move(int dx, int dy);
+	void modify();
+	void save(string path);
+	void calculateOrigin();
+
+protected:
+	CPoint topleft, bottomright;
+};
 #endif

@@ -132,3 +132,124 @@ void CADLine::calculateOrigin()
 {
 	origin=CPoint((start.x+end.x)/2,(start.y+end.y)/2);
 }
+
+
+CADRectangle::CADRectangle() :CADElement()
+{
+	topleft = bottomright = CPoint(0, 0);
+}
+
+CADRectangle::~CADRectangle()
+{
+
+}
+
+void CADRectangle::init()
+{
+	bool Ibuttondownflag = false;
+	moveMouseTo(SCREENWIDTH / 2, SCREENHEIGHT / 2);
+	int pointcount = 0;
+	MOUSEMSG mouse;
+	while (pointcount < 2)
+	{
+		mouse = GetMouseMsg();
+		switch (mouse.uMsg)
+		{
+		case WM_LBUTTONDOWN:
+			Ibuttondownflag = true;
+			break;
+		case WM_LBUTTONUP:
+			if (Ibuttondownflag)
+			{
+				Ibuttondownflag = false;
+				pointcount++;
+				if (pointcount == 1)
+				{
+					topleft = CPoint(mouse.x, mouse.y);
+				}
+				else if (pointcount == 2)
+				{
+					CPoint temp = topleft;
+					if (mouse.x > topleft.x && mouse.y > topleft.y)
+					{
+						topleft = CPoint(temp.x, mouse.y);
+						bottomright = CPoint(mouse.x, temp.y);
+					}
+					else if (mouse.x < topleft.x && mouse.y > topleft.y)
+					{
+						topleft = CPoint(mouse.x, mouse.y);
+						bottomright = CPoint(temp.x, temp.y);
+					}
+					else if (mouse.x > topleft.x && mouse.y < topleft.y)
+					{
+
+						bottomright = CPoint(mouse.x, mouse.y);
+					}
+					else if (mouse.x < topleft.x && mouse.y < topleft.y)
+					{
+						topleft = CPoint(mouse.x, temp.y);
+						bottomright = CPoint(temp.x, mouse.y);
+					}
+				}
+			}
+			break;
+		case WM_LBUTTONDBLCLK:
+
+			break;
+		}
+
+		if (pointcount > 0 && pointcount < 2)
+		{
+			CPoint temp = topleft;
+			if (mouse.x > topleft.x && mouse.y > topleft.y)
+			{
+				topleft = CPoint(temp.x, mouse.y);
+				bottomright = CPoint(mouse.x, temp.y);
+			}
+			else if (mouse.x < topleft.x && mouse.y > topleft.y)
+			{
+				topleft = CPoint(mouse.x, mouse.y);
+				bottomright = CPoint(temp.x, temp.y);
+			}
+			else if (mouse.x > topleft.x && mouse.y < topleft.y)
+			{
+
+				bottomright = CPoint(mouse.x, mouse.y);
+			}
+			else if (mouse.x < topleft.x && mouse.y < topleft.y)
+			{
+				topleft = CPoint(mouse.x, temp.y);
+				bottomright = CPoint(temp.x, mouse.y);
+			}
+
+			refreshScreen();
+		}
+	}
+}
+
+void CADRectangle::draw()
+{
+	rectangle(topleft.x, topleft.y, bottomright.x, bottomright.y);
+}
+
+void CADRectangle::move(int dx, int dy)
+{
+	CPoint delta(dx, dy);
+	topleft += delta;
+	bottomright += delta;
+}
+
+void CADRectangle::modify()
+{
+
+}
+
+void CADRectangle::save(string path)
+{
+
+}
+
+void CADRectangle::calculateOrigin()
+{
+	origin = CPoint((topleft.x + bottomright.x) / 2, (topleft.y + bottomright.y) / 2);
+}
