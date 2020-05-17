@@ -108,7 +108,7 @@ void CADLine::init()
 
 void CADLine::draw()
 {
-	rectangle(start.x,start.y,end.x,end.y);
+	line(start.x,start.y,end.x,end.y);
 }
 
 void CADLine::move(int dx,int dy)
