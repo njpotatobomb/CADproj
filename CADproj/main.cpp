@@ -75,6 +75,7 @@ int main()
 						{
 							//open
 
+							open();
 							break;
 						}
 						case 01:
@@ -297,4 +298,38 @@ void save()
 		objects[i]->save();
 	}
 	InputBox(NULL, 55, L"Saved!", NULL);
+}
+
+
+
+void open()
+{
+	ifstream fin;
+	fin.open("CADProject.txt");
+	int tempid;
+	while (!fin.eof())
+	{
+		bool test = true;
+		fin >> tempid;
+		switch(tempid/1000)
+			case 1:
+		{
+			CPoint tempstart, tempend;
+			fin >> tempstart.x >> tempstart.y >> tempend.x >> tempend.y;
+			for (int i = 0; i < objects.size(); i++)
+			{
+				if (objects[i]->getId() == tempid)   test = false;
+			}
+			if (test)
+			{
+				CADLine* pnewline = new CADLine();
+				pnewline->open(tempid,tempstart,tempend);
+				objects.push_back(pnewline);
+			}
+			break;
+		}
+			case 2:break;
+			case 3:break;
+			case 4:break;
+	}
 }

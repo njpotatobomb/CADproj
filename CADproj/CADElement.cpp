@@ -138,6 +138,14 @@ void CADLine::calculateOrigin()
 	origin=CPoint((start.x+end.x)/2,(start.y+end.y)/2);
 }
 
+void CADLine::open(int pid,CPoint pstart, CPoint pend)
+{
+	id = pid;
+	start = pstart;
+	end = pend;
+	calculateOrigin();
+	draw();
+}
 
 
 

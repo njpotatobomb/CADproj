@@ -34,5 +34,6 @@ void init();
 void refreshScreen();
 void moveMouseTo(int px,int py);
 void save();
+void open();
 
 #endif
