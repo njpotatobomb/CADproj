@@ -113,15 +113,17 @@ int main()
 						case 02:
 						{
 							//exit
-
-							for(auto& it:objects)
-								delete it;
-							for(auto& it:buttons)
-								delete it;
-							for(auto& it:outline)
-								delete it;
-							return 0;
-
+							if(InputBox(nullptr,63,_T("Do you really want to exit?\nPress \"Yes\" to continue,\"No\" to cancel."),
+								_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
+							{
+								for(auto& it:objects)
+									delete it;
+								for(auto& it:buttons)
+									delete it;
+								for(auto& it:outline)
+									delete it;
+								return 0;
+							}
 							break;
 						}
 						case 10:

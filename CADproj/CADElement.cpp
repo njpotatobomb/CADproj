@@ -92,11 +92,11 @@ CADLine::~CADLine()
 
 void CADLine::init()
 {
-	TCHAR s[63];
-	if(InputBox(s,63,_T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
+	if(InputBox(nullptr,63,_T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
 		_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
 	{
 		int x=0,y=0;
+		TCHAR s[63];
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input coordinate of starting point:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
@@ -235,11 +235,11 @@ CADRectangle::~CADRectangle()
 
 void CADRectangle::init()
 {
-	TCHAR s[63];
-	if(InputBox(s,63,_T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
+	if(InputBox(nullptr,63,_T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
 		_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
 	{
 		int x=0,y=0;
+		TCHAR s[63];
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input coordinate of topleft corner:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
@@ -379,11 +379,11 @@ CADCircle::~CADCircle()
 
 void CADCircle::init()
 {
-	TCHAR s[63];
-	if(InputBox(s,63,_T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
+	if(InputBox(nullptr,63,_T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
 		_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
 	{
 		int x=0,y=0;
+		TCHAR s[63];
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input coordinate of center:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
