@@ -288,7 +288,12 @@ void moveMouseTo(int px,int py)
 	SetCursorPos(point.x,point.y);
 }
 
-
+/**
+  * @brief      save data
+  * @param   none
+  * @retval     none
+  * @author	 Sad Cloud55
+  */
 
 void save()
 {
@@ -302,6 +307,13 @@ void save()
 
 
 
+/**
+  * @brief      putin data
+  * @param   none
+  * @retval     none
+  * @author	 Sad Cloud55
+  */
+
 void open()
 {
 	ifstream fin;
@@ -311,11 +323,10 @@ void open()
 	{
 		bool test = true;
 		fin >> tempid;
-		switch(tempid/1000)
-			case 1:
+		switch (tempid / 1000)
 		{
-			CPoint tempstart, tempend;
-			fin >> tempstart.x >> tempstart.y >> tempend.x >> tempend.y;
+		case 1://open a Line
+		{
 			for (int i = 0; i < objects.size(); i++)
 			{
 				if (objects[i]->getId() == tempid)   test = false;
@@ -323,13 +334,40 @@ void open()
 			if (test)
 			{
 				CADLine* pnewline = new CADLine();
-				pnewline->open(tempid,tempstart,tempend);
+				pnewline->open(tempid, fin);
 				objects.push_back(pnewline);
 			}
 			break;
 		}
-			case 2:break;
-			case 3:break;
-			case 4:break;
+		case 2://open a Rectangle
+		{
+			for (int i = 0; i < objects.size(); i++)
+			{
+				if (objects[i]->getId() == tempid)   test = false;
+			}
+			if (test)
+			{
+				CADRectangle* pnewrectangle = new CADRectangle();
+				pnewrectangle->open(tempid, fin);
+				objects.push_back(pnewrectangle);
+			}
+			break;
+		}
+		case 3:
+		{
+			for (int i = 0; i < objects.size(); i++)
+			{
+				if (objects[i]->getId() == tempid)   test = false;
+			}
+			if (test)
+			{
+				CADCircle* pnewcircle = new CADCircle();
+				pnewcircle->open(tempid, fin);
+				objects.push_back(pnewcircle);
+			}
+			break;
+		}
+		case 4:break;
+		}
 	}
 }

@@ -141,11 +141,10 @@ void CADLine::calculateOrigin()
 	origin=CPoint((start.x+end.x)/2,(start.y+end.y)/2);
 }
 
-void CADLine::open(int pid,CPoint pstart, CPoint pend)
+void CADLine::open(int pid,ifstream& os)
 {
 	id = pid;
-	start = pstart;
-	end = pend;
+	os >> start.x >> start.y >> end.x >> end.y;
 	calculateOrigin();
 	draw();
 }
@@ -154,7 +153,7 @@ void CADLine::open(int pid,CPoint pstart, CPoint pend)
 
 
 /**
-  * @brief      CADLine functions
+  * @brief      CADRectangle functions
   * @author	 SadCloud55
   */
 
@@ -250,8 +249,18 @@ void CADRectangle::calculateOrigin()
 	origin = CPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 }
 
+void CADRectangle::open(int pid, ifstream& os)
+{
+	id = pid;
+	os>> start.x >> start.y >> end.x >> end.y;
+	calculateOrigin();
+	draw();
+}
 
-//================================
+/**
+  * @brief      CADCircle functions
+  * @author	 SadCloud55
+  */
 CADCircle::CADCircle():CADElement()
 {
 	center = CPoint(0, 0);
@@ -341,4 +350,12 @@ void CADCircle::save()
 void CADCircle::calculateOrigin()
 {
 	origin = center;
+}
+
+void CADCircle::open(int pid,ifstream& os)
+{
+	id = pid;
+	os >> center.x >> center.y >> radius;
+	calculateOrigin();
+	draw();
 }
