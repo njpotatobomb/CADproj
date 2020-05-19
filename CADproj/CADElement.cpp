@@ -15,15 +15,35 @@ using namespace std;
 
 CADElement::CADElement()
 {
-	id=0;
 	origin=CPoint(0,0);
-
-	static vector<int> idgen;
-
+	
+	bool sucsessflag=true;
+	do
+	{
+		id=rand()%1000;
+		for(auto& it:idgen)
+		{
+			if(it==id)
+			{
+				sucsessflag=false;
+				break;
+			}
+		}
+	}while(!sucsessflag);
+	idgen.push_back(id);
 }
 
 CADElement::~CADElement()
 {
+	id%=1000;
+	for(auto it=idgen.begin();it!=idgen.end();it++)
+	{
+		if(*it==id)
+		{
+			idgen.erase(it);
+			break;
+		}
+	}
 
 }
 
@@ -37,6 +57,8 @@ int CADElement::getId()
 	return id;
 }
 
+vector<int> CADElement::idgen;
+
 
 
 
@@ -49,7 +71,7 @@ int CADElement::getId()
 CADLine::CADLine():CADElement()
 {
 	start=end=CPoint(0,0);
-	id = 1000 + rand() % 1000;
+	id+=1000;
 }
 
 CADLine::~CADLine()
@@ -146,14 +168,14 @@ void CADLine::calculateOrigin()
 
 
 /**
-  * @brief      CADLine functions
+  * @brief      CADRectangle functions
   * @author	 SadCloud55
   */
 
 CADRectangle::CADRectangle() :CADElement()
 {
 	start = end = CPoint(0, 0);
-	id = 2000 + rand() % 1000;
+	id+=2000;
 }
 
 CADRectangle::~CADRectangle()
@@ -243,12 +265,19 @@ void CADRectangle::calculateOrigin()
 }
 
 
-//================================
+
+
+
+/**
+  * @brief      CADRectangle functions
+  * @author	 SadCloud55
+  */
+
 CADCircle::CADCircle():CADElement()
 {
 	center = CPoint(0, 0);
 	radius = 0;
-	id = 3000 + rand() % 1000;
+	id+=3000;
 }
 
 CADCircle::~CADCircle()
@@ -287,7 +316,7 @@ void CADCircle::init()
 				}
 				else if (pointcount == 2)
 				{
-					radius = sqrt((mouse.x - center.x) * (mouse.x - center.x) + (mouse.y - center.y) * (mouse.y - center.y));
+					radius = (int)sqrt((mouse.x - center.x) * (mouse.x - center.x) + (mouse.y - center.y) * (mouse.y - center.y));
 				}
 			}
 			break;
@@ -300,7 +329,7 @@ void CADCircle::init()
 		}
 
 		if (pointcount > 0 && pointcount < 2)
-			radius = sqrt((mouse.x - center.x) * (mouse.x - center.x) + (mouse.y - center.y) * (mouse.y - center.y));
+			radius = (int)sqrt((mouse.x - center.x) * (mouse.x - center.x) + (mouse.y - center.y) * (mouse.y - center.y));
 
 		refreshScreen();
 	}

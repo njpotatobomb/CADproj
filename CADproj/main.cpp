@@ -23,11 +23,6 @@ vector<Button*> buttons;
   */
 int main()
 {
-	srand(time(0));
-	initgraph(SCREENWIDTH,SCREENHEIGHT);
-	HWND hWnd=GetHWnd();
-	SetWindowText(hWnd,L"Crappy CAD");
-
 	//setaspectratio(1,1);
 	//float px=0;
 	//float py=0;
@@ -81,8 +76,8 @@ int main()
 						{
 							//save
 
-
 							save();
+
 							break;
 						}
 						case 02:
@@ -119,6 +114,8 @@ int main()
 						}
 						case 12:
 						{
+							//add circle
+
 							CADCircle* pNewCircle = new CADCircle();
 							objects.push_back(pNewCircle);
 							pNewCircle->init();
@@ -203,6 +200,12 @@ int main()
   */
 void init()
 {
+	srand((int)time(0));
+
+	initgraph(SCREENWIDTH,SCREENHEIGHT);
+	HWND hWnd=GetHWnd();
+	SetWindowText(hWnd,L"Crappy CAD");
+
 	int i=0;
 	CPoint coord(0,0);
 	Button* pNewButton;
@@ -289,6 +292,12 @@ void moveMouseTo(int px,int py)
 
 
 
+/**
+  * @brief      save current file
+  * @param   none
+  * @retval     none
+  * @author	 SadCloud55
+  */
 void save()
 {
 

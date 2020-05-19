@@ -29,6 +29,7 @@ public:
 protected:
 	int id;
 	CPoint origin;
+	static vector<int> idgen;
 
 };
 
