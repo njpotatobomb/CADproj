@@ -206,9 +206,11 @@ int main()
 						{
 							//deselect
 
-							selectedOutline->setSelectedFlag(false);
+							if(selectedOutline)
+								selectedOutline->setSelectedFlag(false);
+							if(selectedObject)
+								selectedObject->setSelectedFlag(false);
 							selectedOutline=nullptr;
-							selectedObject->setSelectedFlag(false);
 							selectedObject=nullptr;
 
 							break;
@@ -316,7 +318,7 @@ void init()
 	font.lfHeight=TEXTHEIGHT;
 	_tcscpy_s(font.lfFaceName,L"Microsoft Yahei UI");	
 	font.lfQuality=ANTIALIASED_QUALITY;
-	font.lfWeight=FW_LIGHT;
+	font.lfWeight=FW_THIN;
 	settextstyle(&font);
 }
 
