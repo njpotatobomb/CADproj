@@ -46,6 +46,7 @@ int CADElement::getId()
 CADLine::CADLine():CADElement()
 {
 	start=end=CPoint(0,0);
+	id = 1000 + rand() % 1000;
 }
 
 CADLine::~CADLine()
@@ -126,7 +127,7 @@ void CADLine::modify()
 void CADLine::save()
 {
 	ofstream fout;
-	fout.open("CADProject.txt",ios::out,ios::app);
+	fout.open("CADProject.txt",ios::app);
 	fout << getId() << '\t' << start.x << '\t' << start.y
 							<< '\t' << end.x << '\t' << end.y << endl;
 	fout.close();
@@ -149,6 +150,7 @@ void CADLine::calculateOrigin()
 CADRectangle::CADRectangle() :CADElement()
 {
 	start = end = CPoint(0, 0);
+	id = 2000 + rand() % 1000;
 }
 
 CADRectangle::~CADRectangle()
@@ -226,7 +228,7 @@ void CADRectangle::modify()
 void CADRectangle::save()
 {
 	ofstream fout;
-	fout.open("CADProject.txt", ios::out, ios::app);
+	fout.open("CADProject.txt",ios::app);
 	fout << getId() << '\t' << start.x << '\t' << start.y
 		<< '\t' << end.x << '\t' << end.y << endl;
 	fout.close();
@@ -243,6 +245,7 @@ CADCircle::CADCircle():CADElement()
 {
 	center = CPoint(0, 0);
 	radius = 0;
+	id = 3000 + rand() % 1000;
 }
 
 CADCircle::~CADCircle()
@@ -319,7 +322,7 @@ void CADCircle::modify()
 void CADCircle::save()
 {
 	ofstream fout;
-	fout.open("CADProject.txt", ios::out, ios::app);
+	fout.open("CADProject.txt",ios::app);
 	fout << getId() << '\t' << center.x << '\t' << center.y << '\t' << radius << endl;
 	fout.close();
 }

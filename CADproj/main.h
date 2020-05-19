@@ -30,7 +30,6 @@
 
 
 
-
 void init();
 void refreshScreen();
 void moveMouseTo(int px,int py);

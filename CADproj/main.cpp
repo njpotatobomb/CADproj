@@ -23,6 +23,7 @@ vector<Button*> buttons;
   */
 int main()
 {
+	srand(time(0));
 	initgraph(SCREENWIDTH,SCREENHEIGHT);
 	HWND hWnd=GetHWnd();
 	SetWindowText(hWnd,L"Crappy CAD");
@@ -290,8 +291,10 @@ void moveMouseTo(int px,int py)
 
 void save()
 {
+
 	for (int i = 0; i < objects.size(); i++)
 	{
 		objects[i]->save();
 	}
+	InputBox(NULL, 55, L"Saved!", NULL);
 }
