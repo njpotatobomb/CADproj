@@ -81,55 +81,75 @@ CADLine::~CADLine()
 
 void CADLine::init()
 {
-	moveMouseTo(SCREENWIDTH/2,SCREENHEIGHT/2);
-
-	TCHAR s[127];
-	InputBox(s,127,L"?",L"??",L"????",0,0,false);
-
-	bool lbuttondownflag=false;
-	int pointcount=0;
-	MOUSEMSG mouse;
-	while(pointcount<2)
+	TCHAR s[63];
+	if(InputBox(s,63,_T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
+		_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
 	{
-		mouse=GetMouseMsg();
+		int x=0,y=0;
 
-		switch(mouse.uMsg)
+		memset(s,0,63*sizeof(TCHAR));
+		InputBox(s,63,_T("Input coordinate of starting point:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
+		checkUserInput(s,63,_T("Input coordinate of starting point:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t0,0"));
+		_stscanf_s(s,_T("%d,%d"),&x,&y);
+		start=CPoint(x,y+TEXTHEIGHT+1);
+
+		memset(s,0,63*sizeof(TCHAR));
+		InputBox(s,63,_T("Input coordinate of ending point:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
+		checkUserInput(s,63,_T("Input coordinate of ending point:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t0,0"));
+		_stscanf_s(s,_T("%d,%d"),&x,&y);
+		end=CPoint(x,y+TEXTHEIGHT+1);
+
+	}else
+	{
+		moveMouseTo(SCREENWIDTH/2,SCREENHEIGHT/2);
+
+		bool lbuttondownflag=false;
+		int pointcount=0;
+		MOUSEMSG mouse;
+		while(pointcount<2)
 		{
-		case WM_LBUTTONDOWN:
-		{
-			lbuttondownflag=true;
-			break;
-		}
-		case WM_LBUTTONUP:
-		{
-			if(lbuttondownflag)
+			mouse=GetMouseMsg();
+
+			switch(mouse.uMsg)
 			{
-				lbuttondownflag=false;
-
-				//left button pressed
-				pointcount++;
-				if(pointcount==1)
-				{
-					start=CPoint(mouse.x,mouse.y);
-				} else if(pointcount==2)
-				{
-					end=CPoint(mouse.x,mouse.y);
-				}
+			case WM_LBUTTONDOWN:
+			{
+				lbuttondownflag=true;
+				break;
 			}
-			break;
-		}
-		case WM_LBUTTONDBLCLK:
-		{
+			case WM_LBUTTONUP:
+			{
+				if(lbuttondownflag)
+				{
+					lbuttondownflag=false;
 
-			break;
-		}
+					//left button pressed
+					pointcount++;
+					if(pointcount==1)
+					{
+						start=CPoint(mouse.x,mouse.y);
+					} else if(pointcount==2)
+					{
+						end=CPoint(mouse.x,mouse.y);
+					}
+				}
+				break;
+			}
+			case WM_LBUTTONDBLCLK:
+			{
+
+				break;
+			}
+			}
+
+			if(pointcount>0&&pointcount<2)
+				end=CPoint(mouse.x,mouse.y);
+
+			refreshScreen();
 		}
 
-		if(pointcount>0&&pointcount<2)
-			end=CPoint(mouse.x,mouse.y);
-
-		refreshScreen();
 	}
+
 }
 
 void CADLine::draw()
@@ -174,6 +194,7 @@ void CADLine::open(int pid,ifstream& os)
 
 
 
+
 /**
   * @brief      CADRectangle functions
   * @author	 SadCloud55
@@ -192,52 +213,75 @@ CADRectangle::~CADRectangle()
 
 void CADRectangle::init()
 {
-	bool Ibuttondownflag = false;
-	moveMouseTo(SCREENWIDTH / 2, SCREENHEIGHT / 2);
-	int pointcount = 0;
-	MOUSEMSG mouse;
-	while (pointcount < 2)
+	TCHAR s[63];
+	if(InputBox(s,63,_T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
+		_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
 	{
-		mouse = GetMouseMsg();
+		int x=0,y=0;
 
-		switch (mouse.uMsg)
+		memset(s,0,63*sizeof(TCHAR));
+		InputBox(s,63,_T("Input coordinate of topleft corner:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
+		checkUserInput(s,63,_T("Input coordinate of starting point:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t0,0"));
+		_stscanf_s(s,_T("%d,%d"),&x,&y);
+		start=CPoint(x,y+TEXTHEIGHT+1);
+
+		memset(s,0,63*sizeof(TCHAR));
+		InputBox(s,63,_T("Input width and height:"),_T("CrappyCAD"),_T("For example:\t200,100"),0,0,true);
+		checkUserInput(s,63,_T("Input width and height:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t200,100"));
+		_stscanf_s(s,_T("%d,%d"),&x,&y);
+		end=CPoint(start.x+x,start.y+y);
+
+	} else
+	{
+		moveMouseTo(SCREENWIDTH/2,SCREENHEIGHT/2);
+
+		bool Ibuttondownflag=false;
+		int pointcount=0;
+		MOUSEMSG mouse;
+		while(pointcount<2)
 		{
-		case WM_LBUTTONDOWN:
-		{
-			Ibuttondownflag = true;
-			break;
-		}
-		case WM_LBUTTONUP:
-		{
-			if (Ibuttondownflag)
+			mouse=GetMouseMsg();
+
+			switch(mouse.uMsg)
 			{
-				Ibuttondownflag = false;
-
-				//left button pressed
-				pointcount++;
-				if (pointcount == 1)
-				{
-					start = CPoint(mouse.x, mouse.y);
-				}
-				else if (pointcount == 2)
-				{
-					end = CPoint(mouse.x, mouse.y);
-				}
+			case WM_LBUTTONDOWN:
+			{
+				Ibuttondownflag=true;
+				break;
 			}
-			break;
-		}
-		case WM_LBUTTONDBLCLK:
-		{
+			case WM_LBUTTONUP:
+			{
+				if(Ibuttondownflag)
+				{
+					Ibuttondownflag=false;
 
-			break;
-		}
+					//left button pressed
+					pointcount++;
+					if(pointcount==1)
+					{
+						start=CPoint(mouse.x,mouse.y);
+					} else if(pointcount==2)
+					{
+						end=CPoint(mouse.x,mouse.y);
+					}
+				}
+				break;
+			}
+			case WM_LBUTTONDBLCLK:
+			{
+
+				break;
+			}
+			}
+
+			if(pointcount>0&&pointcount<2)
+				end=CPoint(mouse.x,mouse.y);
+
+			refreshScreen();
 		}
 
-		if (pointcount > 0 && pointcount < 2)
-			end = CPoint(mouse.x, mouse.y);
-
-		refreshScreen();
 	}
+
 }
 
 void CADRectangle::draw()
@@ -301,52 +345,90 @@ CADCircle::~CADCircle()
 
 void CADCircle::init()
 {
-	bool Ibuttondownflag = false;
-	moveMouseTo(SCREENWIDTH / 2, SCREENHEIGHT / 2);
-	int pointcount = 0;
-	MOUSEMSG mouse;
-	while (pointcount < 2)
+	TCHAR s[63];
+	if(InputBox(s,63,_T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
+		_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
 	{
-		mouse = GetMouseMsg();
+		int x=0,y=0;
 
-		switch (mouse.uMsg)
+		memset(s,0,63*sizeof(TCHAR));
+		InputBox(s,63,_T("Input coordinate of center:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
+		checkUserInput(s,63,_T("Input coordinate of center:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t0,0"));
+		_stscanf_s(s,_T("%d,%d"),&x,&y);
+		center=CPoint(x,y+TEXTHEIGHT+1);
+
+		memset(s,0,63*sizeof(TCHAR));
+		InputBox(s,63,_T("Input radius:"),_T("CrappyCAD"),_T("For example:\t100"),0,0,true);
+		checkUserInput(s,63,_T("Input radius:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t100"));
+		while(1)                //only one that is slightly different in checking logic,wont create a new function just for this
 		{
-		case WM_LBUTTONDOWN:
-		{
-			Ibuttondownflag = true;
-			break;
-		}
-		case WM_LBUTTONUP:
-		{
-			if (Ibuttondownflag)
+			int i;
+			for(i=0;s[i]!=0;i++)
+				if(!(s[i]>='0'&&s[i]<='9'))
+					break;
+			if(s[i]!=0)
 			{
-				Ibuttondownflag = false;
-
-				//left button pressed
-				pointcount++;
-				if (pointcount == 1)
-				{
-					center = CPoint(mouse.x, mouse.y);
-				}
-				else if (pointcount == 2)
-				{
-					radius = (int)sqrt((mouse.x - center.x) * (mouse.x - center.x) + (mouse.y - center.y) * (mouse.y - center.y));
-				}
+				memset(s,0,63*sizeof(TCHAR));
+				InputBox(s,63,_T("Input radius:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t100"),0,0,true);
+			} else
+			{
+				break;
 			}
-			break;
 		}
-		case WM_LBUTTONDBLCLK:
+		_stscanf_s(s,_T("%d"),&x);
+		radius=x;
+
+	} else
+	{
+		moveMouseTo(SCREENWIDTH/2,SCREENHEIGHT/2);
+		
+		bool Ibuttondownflag=false;
+		int pointcount=0;
+		MOUSEMSG mouse;
+		while(pointcount<2)
 		{
+			mouse=GetMouseMsg();
 
-			break;
+			switch(mouse.uMsg)
+			{
+			case WM_LBUTTONDOWN:
+			{
+				Ibuttondownflag=true;
+				break;
+			}
+			case WM_LBUTTONUP:
+			{
+				if(Ibuttondownflag)
+				{
+					Ibuttondownflag=false;
+
+					//left button pressed
+					pointcount++;
+					if(pointcount==1)
+					{
+						center=CPoint(mouse.x,mouse.y);
+					} else if(pointcount==2)
+					{
+						radius=(int)sqrt((mouse.x-center.x)*(mouse.x-center.x)+(mouse.y-center.y)*(mouse.y-center.y));
+					}
+				}
+				break;
+			}
+			case WM_LBUTTONDBLCLK:
+			{
+
+				break;
+			}
+			}
+
+			if(pointcount>0&&pointcount<2)
+				radius=(int)sqrt((mouse.x-center.x)*(mouse.x-center.x)+(mouse.y-center.y)*(mouse.y-center.y));
+
+			refreshScreen();
 		}
-		}
 
-		if (pointcount > 0 && pointcount < 2)
-			radius = (int)sqrt((mouse.x - center.x) * (mouse.x - center.x) + (mouse.y - center.y) * (mouse.y - center.y));
-
-		refreshScreen();
 	}
+
 }
 
 void CADCircle::draw()
@@ -384,4 +466,33 @@ void CADCircle::open(int pid,ifstream& os)
 	os >> center.x >> center.y >> radius;
 	calculateOrigin();
 	draw();
+}
+
+
+
+
+
+/**
+  * @brief      check if user input from InputBox() is *,*
+  * @param   s,nMaxCount,pPrompt,pTitle,pDefault
+  * @retval     none
+  * @author	 njpotatobomb
+  */
+void checkUserInput(TCHAR* s,int nMaxCount,LPCTSTR pPrompt,LPCTSTR pTitle,LPCTSTR pDefault)
+{
+	while(1)
+	{
+		int i;
+		for(i=0;s[i]!=0;i++)
+			if(!((s[i]>='0'&&s[i]<='9')||s[i]==','))
+				break;
+		if(s[i]!=0)
+		{
+			memset(s,0,nMaxCount*sizeof(TCHAR));
+			InputBox(s,nMaxCount,pPrompt,pTitle,pDefault,0,0,true);
+		} else
+		{
+			break;
+		}
+	}
 }

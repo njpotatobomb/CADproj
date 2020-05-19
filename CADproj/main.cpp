@@ -71,6 +71,7 @@ int main()
 							//open
 
 							open();
+
 							break;
 						}
 						case 01:
@@ -291,18 +292,13 @@ void moveMouseTo(int px,int py)
 	SetCursorPos(point.x,point.y);
 }
 
+
+
 /**
   * @brief      save data
   * @param   none
   * @retval     none
   * @author	 Sad Cloud55
-  */
-
-/**
-  * @brief      save current file
-  * @param   none
-  * @retval     none
-  * @author	 SadCloud55
   */
 void save()
 {
@@ -322,7 +318,6 @@ void save()
   * @retval     none
   * @author	 Sad Cloud55
   */
-
 void open()
 {
 	ifstream fin;
@@ -362,7 +357,7 @@ void open()
 			}
 			break;
 		}
-		case 3:
+		case 3://open a Circle
 		{
 			for (int i = 0; i < objects.size(); i++)
 			{
@@ -376,7 +371,19 @@ void open()
 			}
 			break;
 		}
-		case 4:break;
+		case 4://open a Polygon
+		{
+
+			break;
+
+		}
+		default://opps
+		{
+
+			break;
+
+		}
+
 		}
 	}
 }

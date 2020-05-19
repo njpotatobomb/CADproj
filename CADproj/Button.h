@@ -31,8 +31,8 @@ protected:
 	
 };
 
-static LPCTSTR topmenu[]={L"open",L"save",L"exit"};
-static LPCTSTR bottommenu[]={L"add line",L"add rectangle",L"add circle",L"add polygon",L"modify",L"move",L"delete",L"delete all"};
+static LPCTSTR topmenu[]={_T("open"),_T("save"),_T("exit")};
+static LPCTSTR bottommenu[]={_T("add line"),_T("add rectangle"),_T("add circle"),_T("add polygon"),_T("modify"),_T("move"),_T("delete"),_T("delete all")};
 
 
 

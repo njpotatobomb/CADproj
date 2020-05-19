@@ -55,6 +55,8 @@ protected:
 
 };
 
+
+
 class CADRectangle :public CADElement
 {
 public:
@@ -72,6 +74,8 @@ public:
 protected:
 	CPoint start, end;
 };
+
+
 
 class CADCircle :public CADElement
 {
@@ -91,4 +95,11 @@ protected:
 	CPoint center;
 	int radius;
 };
+
+
+
+void checkUserInput(TCHAR* s,int nMaxCount,LPCTSTR pPrompt,LPCTSTR pTitle,LPCTSTR pDefault);
+
+
+
 #endif
