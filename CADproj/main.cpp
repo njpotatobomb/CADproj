@@ -70,6 +70,7 @@ int main()
 						{
 							//open
 
+							open();
 							break;
 						}
 						case 01:
@@ -290,7 +291,12 @@ void moveMouseTo(int px,int py)
 	SetCursorPos(point.x,point.y);
 }
 
-
+/**
+  * @brief      save data
+  * @param   none
+  * @retval     none
+  * @author	 Sad Cloud55
+  */
 
 /**
   * @brief      save current file
@@ -306,4 +312,71 @@ void save()
 		objects[i]->save();
 	}
 	InputBox(NULL, 55, L"Saved!", NULL);
+}
+
+
+
+/**
+  * @brief      putin data
+  * @param   none
+  * @retval     none
+  * @author	 Sad Cloud55
+  */
+
+void open()
+{
+	ifstream fin;
+	fin.open("CADProject.txt");
+	int tempid;
+	while (!fin.eof())
+	{
+		bool test = true;
+		fin >> tempid;
+		switch (tempid / 1000)
+		{
+		case 1://open a Line
+		{
+			for (int i = 0; i < objects.size(); i++)
+			{
+				if (objects[i]->getId() == tempid)   test = false;
+			}
+			if (test)
+			{
+				CADLine* pnewline = new CADLine();
+				pnewline->open(tempid, fin);
+				objects.push_back(pnewline);
+			}
+			break;
+		}
+		case 2://open a Rectangle
+		{
+			for (int i = 0; i < objects.size(); i++)
+			{
+				if (objects[i]->getId() == tempid)   test = false;
+			}
+			if (test)
+			{
+				CADRectangle* pnewrectangle = new CADRectangle();
+				pnewrectangle->open(tempid, fin);
+				objects.push_back(pnewrectangle);
+			}
+			break;
+		}
+		case 3:
+		{
+			for (int i = 0; i < objects.size(); i++)
+			{
+				if (objects[i]->getId() == tempid)   test = false;
+			}
+			if (test)
+			{
+				CADCircle* pnewcircle = new CADCircle();
+				pnewcircle->open(tempid, fin);
+				objects.push_back(pnewcircle);
+			}
+			break;
+		}
+		case 4:break;
+		}
+	}
 }

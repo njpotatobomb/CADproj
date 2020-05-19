@@ -21,6 +21,7 @@ public:
 	virtual void modify()=0;
 	virtual void save()=0;
 	virtual void calculateOrigin()=0;
+	virtual void open(int pid,ifstream& os) = 0;
 
 	const CPoint& getOrigin();
 	int getId();
@@ -47,6 +48,7 @@ public:
 	void modify();
 	void save();
 	void calculateOrigin();
+	void open(int pid,ifstream& os);
 
 protected:
 	CPoint start,end;
@@ -65,6 +67,7 @@ public:
 	void modify();
 	void save();
 	void calculateOrigin();
+	void open(int pid,ifstream& os);
 
 protected:
 	CPoint start, end;
@@ -82,6 +85,7 @@ public:
 	void modify();
 	void save();
 	void calculateOrigin();
+	void open(int pid,ifstream& os);
 
 protected:
 	CPoint center;
