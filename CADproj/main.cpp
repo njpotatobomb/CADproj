@@ -80,6 +80,8 @@ int main()
 						{
 							//save
 
+
+							save();
 							break;
 						}
 						case 02:
@@ -101,6 +103,7 @@ int main()
 							CADLine* pNewLine=new CADLine();
 							objects.push_back(pNewLine);
 							pNewLine->init();
+							pNewLine->id
 
 							break;
 						}
@@ -282,4 +285,14 @@ void moveMouseTo(int px,int py)
 	CPoint point(px,py);
 	ClientToScreen(hWnd,&point);
 	SetCursorPos(point.x,point.y);
+}
+
+
+
+void save()
+{
+	for (int i = 0; i < objects.size(); i++)
+	{
+		objects[i]->save();
+	}
 }
