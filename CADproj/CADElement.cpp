@@ -17,6 +17,9 @@ CADElement::CADElement()
 {
 	id=0;
 	origin=CPoint(0,0);
+
+	static vector<int> idgen;
+
 }
 
 CADElement::~CADElement()
