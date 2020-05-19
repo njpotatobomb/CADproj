@@ -20,7 +20,7 @@ Button::Button(int pid,int px,int py,LPCTSTR ptext)
 
 	area={location.x,location.y,location.x+width,location.y+height};
 
-	mouseOnFlag=false;
+	mouseOnFlag=selectedFlag=false;
 
 	id=pid;
 }
@@ -46,6 +46,9 @@ void Button::draw()
 		settextcolor(WHITE);
 	}
 
+	if(selectedFlag)
+		settextcolor(LIGHTBLUE);
+
 	//outtextxy(location.x,location.y,text);
 	drawtext(text,&area,DT_LEFT|DT_VCENTER|DT_SINGLELINE);
 
@@ -68,6 +71,11 @@ bool Button::isMouseOn()
 	return mouseOnFlag;
 }
 
+void Button::setSelectedFlag(bool state)
+{
+	selectedFlag=state;
+}
+
 int Button::getId()
 {
 	return id;
@@ -76,6 +84,11 @@ int Button::getId()
 CPoint Button::getTopRight()
 {
 	return CPoint(location.x+width,location.y);
+}
+
+CPoint Button::getBottomLeft()
+{
+	return CPoint(location.x,location.y+height);
 }
 
 

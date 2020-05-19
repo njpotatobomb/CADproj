@@ -21,8 +21,10 @@ public:
 	virtual void modify()=0;
 	virtual void save()=0;
 	virtual void calculateOrigin()=0;
-	virtual void open(int pid,ifstream& os) = 0;
+	virtual void open(int pid,ifstream& os)=0;
 
+	void setMouseOnFlag(bool state);
+	void setSelectedFlag(bool state);
 	const CPoint& getOrigin();
 	int getId();
 
@@ -30,6 +32,8 @@ public:
 protected:
 	int id;
 	CPoint origin;
+	bool mouseOnFlag;
+	bool selectedFlag;
 	static vector<int> idgen;
 
 };

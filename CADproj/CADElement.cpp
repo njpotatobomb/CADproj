@@ -16,6 +16,7 @@ using namespace std;
 CADElement::CADElement()
 {
 	origin=CPoint(0,0);
+	mouseOnFlag=selectedFlag=false;
 	
 	bool sucsessflag=true;
 	do
@@ -45,6 +46,16 @@ CADElement::~CADElement()
 		}
 	}
 
+}
+
+void CADElement::setMouseOnFlag(bool state)
+{
+	mouseOnFlag=state;
+}
+
+void CADElement::setSelectedFlag(bool state)
+{
+	selectedFlag=state;
 }
 
 const CPoint& CADElement::getOrigin()
@@ -154,7 +165,18 @@ void CADLine::init()
 
 void CADLine::draw()
 {
+	static COLORREF linecolor;
+	linecolor=getlinecolor();
+
+	if(mouseOnFlag)
+		setlinecolor(YELLOW);
+
+	if(selectedFlag)
+		setlinecolor(LIGHTBLUE);
+
 	line(start.x,start.y,end.x,end.y);
+
+	setlinecolor(linecolor);
 }
 
 void CADLine::move(int dx,int dy)
@@ -286,7 +308,18 @@ void CADRectangle::init()
 
 void CADRectangle::draw()
 {
-	rectangle(start.x, start.y, end.x, end.y);
+	static COLORREF linecolor;
+	linecolor=getlinecolor();
+
+	if(mouseOnFlag)
+		setlinecolor(YELLOW);
+
+	if(selectedFlag)
+		setlinecolor(LIGHTBLUE);
+
+	rectangle(start.x,start.y,end.x,end.y);
+
+	setlinecolor(linecolor);
 }
 
 void CADRectangle::move(int dx, int dy)
@@ -331,6 +364,7 @@ void CADRectangle::open(int pid, ifstream& os)
   * @brief      CADCircle functions
   * @author	 SadCloud55
   */
+
 CADCircle::CADCircle():CADElement()
 {
 	center = CPoint(0, 0);
@@ -433,7 +467,18 @@ void CADCircle::init()
 
 void CADCircle::draw()
 {
-	circle(center.x, center.y, radius);
+	static COLORREF linecolor;
+	linecolor=getlinecolor();
+
+	if(mouseOnFlag)
+		setlinecolor(YELLOW);
+
+	if(selectedFlag)
+		setlinecolor(LIGHTBLUE);
+
+	circle(center.x,center.y,radius);
+
+	setlinecolor(linecolor);
 }
 
 void CADCircle::move(int dx,int dy)
@@ -473,7 +518,7 @@ void CADCircle::open(int pid,ifstream& os)
 
 
 /**
-  * @brief      check if user input from InputBox() is *,*
+  * @brief      check if user input from InputBox() is *,* ,very simple check
   * @param   s,nMaxCount,pPrompt,pTitle,pDefault
   * @retval     none
   * @author	 njpotatobomb
@@ -484,7 +529,7 @@ void checkUserInput(TCHAR* s,int nMaxCount,LPCTSTR pPrompt,LPCTSTR pTitle,LPCTST
 	{
 		int i;
 		for(i=0;s[i]!=0;i++)
-			if(!((s[i]>='0'&&s[i]<='9')||s[i]==','))
+			if(!((s[i]>='0'&&s[i]<='9')||s[i]==','||s[i]=='-'))
 				break;
 		if(s[i]!=0)
 		{

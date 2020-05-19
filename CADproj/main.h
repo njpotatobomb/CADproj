@@ -22,9 +22,10 @@
 //in pixels
 //horizontal=width=x,vertical=height=y
 #define TEXTHEIGHT (24)
+#define OUTLINEWIDTH (150)
 #define CANVASWIDTH (1280)
 #define CANVASHEIGHT (720)
-#define SCREENWIDTH (CANVASWIDTH)
+#define SCREENWIDTH (CANVASWIDTH+OUTLINEWIDTH+1)
 #define SCREENHEIGHT (CANVASHEIGHT+TEXTHEIGHT*2+2)
 
 

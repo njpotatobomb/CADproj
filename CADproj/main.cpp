@@ -7,10 +7,15 @@
 using namespace::std;
 
 
-//uses push_back,so back means upper layer
+//uses push_back,so back means upper layer,remeber to delete in exit functionality
 vector<CADElement*> objects;
 vector<Button*> buttons;
-//remeber to delete in exit functionality
+vector<Button*> outline;
+
+//points to member of objects/outline
+CADElement* selectedObject=nullptr;
+Button* selectedOutline=nullptr;
+
 
 //int fps=0;
 
@@ -36,6 +41,7 @@ int main()
 
 
 	bool lbuttondownflag=false;
+	bool refreshedFlag=false;
 	//int fpscounter=0;
 	//clock_t curtime=0,pretime=0;
 	MOUSEMSG mouse;
@@ -45,6 +51,28 @@ int main()
 
 		for(auto& it:buttons)
 			it->setMouseOnFlag(it->isWithinRegion(mouse.x,mouse.y));
+
+		refreshedFlag=false;
+		for(auto& it:outline)
+		{
+			it->setMouseOnFlag(it->isWithinRegion(mouse.x,mouse.y));
+			if(it->isMouseOn())
+			{
+				for(auto& objit:objects)
+				{
+					if(it->getId()==objit->getId())
+						objit->setMouseOnFlag(true);
+					else
+						objit->setMouseOnFlag(false);
+					refreshedFlag=true;
+				}
+			}
+		}
+		if(!refreshedFlag)
+			for(auto& it:objects)
+				it->setMouseOnFlag(false);
+
+
 
 		switch(mouse.uMsg)
 		{
@@ -90,6 +118,8 @@ int main()
 								delete it;
 							for(auto& it:buttons)
 								delete it;
+							for(auto& it:outline)
+								delete it;
 							return 0;
 
 							break;
@@ -102,6 +132,12 @@ int main()
 							objects.push_back(pNewLine);
 							pNewLine->init();
 
+							CPoint coord=outline.empty()?CPoint(CANVASWIDTH+1,TEXTHEIGHT+1):outline.back()->getBottomLeft();
+							TCHAR s[63];
+							_stprintf_s(s,_T("Line%d"),pNewLine->getId());
+							Button* pNewButton=new Button(pNewLine->getId(),coord.x,coord.y,s);
+							outline.push_back(pNewButton);
+
 							break;
 						}
 						case 11:
@@ -112,6 +148,12 @@ int main()
 							objects.push_back(pNewRectangle);
 							pNewRectangle->init();
 
+							CPoint coord=outline.empty()?CPoint(CANVASWIDTH+1,TEXTHEIGHT+1):outline.back()->getBottomLeft();
+							TCHAR s[63];
+							_stprintf_s(s,_T("Rectangle%d"),pNewRectangle->getId());
+							Button* pNewButton=new Button(pNewRectangle->getId(),coord.x,coord.y,s);
+							outline.push_back(pNewButton);
+
 							break;
 						}
 						case 12:
@@ -121,6 +163,12 @@ int main()
 							CADCircle* pNewCircle = new CADCircle();
 							objects.push_back(pNewCircle);
 							pNewCircle->init();
+
+							CPoint coord=outline.empty()?CPoint(CANVASWIDTH+1,TEXTHEIGHT+1):outline.back()->getBottomLeft();
+							TCHAR s[63];
+							_stprintf_s(s,_T("Circle%d"),pNewCircle->getId());
+							Button* pNewButton=new Button(pNewCircle->getId(),coord.x,coord.y,s);
+							outline.push_back(pNewButton);
 
 							break;
 						}
@@ -154,6 +202,17 @@ int main()
 
 							break;
 						}
+						case 20:
+						{
+							//deselect
+
+							selectedOutline->setSelectedFlag(false);
+							selectedOutline=nullptr;
+							selectedObject->setSelectedFlag(false);
+							selectedObject=nullptr;
+
+							break;
+						}
 						default:
 						{
 
@@ -164,6 +223,26 @@ int main()
 					}
 				}
 
+				for(auto& it:outline)
+				{
+					if(it->isMouseOn())
+					{
+						for(auto& objit:objects)
+						{
+							if(it->getId()==objit->getId())
+							{
+								if(selectedOutline)
+									selectedOutline->setSelectedFlag(false);
+								if(selectedObject)
+									selectedObject->setSelectedFlag(false);
+								selectedOutline=it;
+								selectedObject=objit;
+								it->setSelectedFlag(true);
+								objit->setSelectedFlag(true);
+							}
+						}
+					}
+				}
 			}
 			break;
 		}
@@ -229,6 +308,9 @@ void init()
 		i++;
 	}
 
+	pNewButton=new Button(20+0,CANVASWIDTH+1,SCREENHEIGHT-TEXTHEIGHT,deselectbutton);
+	buttons.push_back(pNewButton);
+
 	LOGFONT font;
 	gettextstyle(&font);
 	font.lfHeight=TEXTHEIGHT;
@@ -261,10 +343,16 @@ void refreshScreen()
 	setfillcolor(BLACK);
 	solidrectangle(0,0,SCREENWIDTH-1,TEXTHEIGHT-1);
 	solidrectangle(0,SCREENHEIGHT-TEXTHEIGHT,SCREENWIDTH-1,SCREENHEIGHT-1);
+	solidrectangle(CANVASWIDTH+1,TEXTHEIGHT+1,SCREENWIDTH-1,SCREENHEIGHT-TEXTHEIGHT-2);
 	setfillcolor(WHITE);
+	line(CANVASWIDTH,0,CANVASWIDTH,SCREENHEIGHT-1);
 
 	//draw buttons
 	for(auto& it:buttons)
+		it->draw();
+
+	//draw outline
+	for(auto& it:outline)
 		it->draw();
 
 	//draw fps counter
@@ -307,7 +395,7 @@ void save()
 	{
 		objects[i]->save();
 	}
-	InputBox(NULL, 55, L"Saved!", NULL);
+	InputBox(NULL, 55, _T("Saved!"), NULL);
 }
 
 
