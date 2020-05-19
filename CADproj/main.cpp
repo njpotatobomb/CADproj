@@ -23,6 +23,7 @@ vector<Button*> buttons;
   */
 int main()
 {
+	srand(time(0));
 	initgraph(SCREENWIDTH,SCREENHEIGHT);
 	HWND hWnd=GetHWnd();
 	SetWindowText(hWnd,L"Crappy CAD");
@@ -80,6 +81,8 @@ int main()
 						{
 							//save
 
+
+							save();
 							break;
 						}
 						case 02:
@@ -116,7 +119,9 @@ int main()
 						}
 						case 12:
 						{
-							//add circle
+							CADCircle* pNewCircle = new CADCircle();
+							objects.push_back(pNewCircle);
+							pNewCircle->init();
 
 							break;
 						}
@@ -280,4 +285,16 @@ void moveMouseTo(int px,int py)
 	CPoint point(px,py);
 	ClientToScreen(hWnd,&point);
 	SetCursorPos(point.x,point.y);
+}
+
+
+
+void save()
+{
+
+	for (int i = 0; i < objects.size(); i++)
+	{
+		objects[i]->save();
+	}
+	InputBox(NULL, 55, L"Saved!", NULL);
 }

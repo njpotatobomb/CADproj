@@ -49,6 +49,7 @@ int CADElement::getId()
 CADLine::CADLine():CADElement()
 {
 	start=end=CPoint(0,0);
+	id = 1000 + rand() % 1000;
 }
 
 CADLine::~CADLine()
@@ -126,9 +127,13 @@ void CADLine::modify()
 
 }
 
-void CADLine::save(string path)
+void CADLine::save()
 {
-
+	ofstream fout;
+	fout.open("CADProject.txt",ios::app);
+	fout << getId() << '\t' << start.x << '\t' << start.y
+							<< '\t' << end.x << '\t' << end.y << endl;
+	fout.close();
 }
 
 void CADLine::calculateOrigin()
@@ -148,6 +153,7 @@ void CADLine::calculateOrigin()
 CADRectangle::CADRectangle() :CADElement()
 {
 	start = end = CPoint(0, 0);
+	id = 2000 + rand() % 1000;
 }
 
 CADRectangle::~CADRectangle()
@@ -222,12 +228,109 @@ void CADRectangle::modify()
 
 }
 
-void CADRectangle::save(string path)
+void CADRectangle::save()
 {
-
+	ofstream fout;
+	fout.open("CADProject.txt",ios::app);
+	fout << getId() << '\t' << start.x << '\t' << start.y
+		<< '\t' << end.x << '\t' << end.y << endl;
+	fout.close();
 }
 
 void CADRectangle::calculateOrigin()
 {
 	origin = CPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
+}
+
+
+//================================
+CADCircle::CADCircle():CADElement()
+{
+	center = CPoint(0, 0);
+	radius = 0;
+	id = 3000 + rand() % 1000;
+}
+
+CADCircle::~CADCircle()
+{
+
+}
+
+void CADCircle::init()
+{
+	bool Ibuttondownflag = false;
+	moveMouseTo(SCREENWIDTH / 2, SCREENHEIGHT / 2);
+	int pointcount = 0;
+	MOUSEMSG mouse;
+	while (pointcount < 2)
+	{
+		mouse = GetMouseMsg();
+
+		switch (mouse.uMsg)
+		{
+		case WM_LBUTTONDOWN:
+		{
+			Ibuttondownflag = true;
+			break;
+		}
+		case WM_LBUTTONUP:
+		{
+			if (Ibuttondownflag)
+			{
+				Ibuttondownflag = false;
+
+				//left button pressed
+				pointcount++;
+				if (pointcount == 1)
+				{
+					center = CPoint(mouse.x, mouse.y);
+				}
+				else if (pointcount == 2)
+				{
+					radius = sqrt((mouse.x - center.x) * (mouse.x - center.x) + (mouse.y - center.y) * (mouse.y - center.y));
+				}
+			}
+			break;
+		}
+		case WM_LBUTTONDBLCLK:
+		{
+
+			break;
+		}
+		}
+
+		if (pointcount > 0 && pointcount < 2)
+			radius = sqrt((mouse.x - center.x) * (mouse.x - center.x) + (mouse.y - center.y) * (mouse.y - center.y));
+
+		refreshScreen();
+	}
+}
+
+void CADCircle::draw()
+{
+	circle(center.x, center.y, radius);
+}
+
+void CADCircle::move(int dx,int dy)
+{
+	CPoint delta(dx, dy);
+	center += delta;
+}
+
+void CADCircle::modify()
+{
+
+}
+
+void CADCircle::save()
+{
+	ofstream fout;
+	fout.open("CADProject.txt",ios::app);
+	fout << getId() << '\t' << center.x << '\t' << center.y << '\t' << radius << endl;
+	fout.close();
+}
+
+void CADCircle::calculateOrigin()
+{
+	origin = center;
 }

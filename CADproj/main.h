@@ -13,6 +13,7 @@
 #include <atltypes.h>
 #include <math.h>
 #include <time.h>
+#include <fstream>
 
 
 
@@ -29,11 +30,9 @@
 
 
 
-
 void init();
 void refreshScreen();
 void moveMouseTo(int px,int py);
-
-
+void save();
 
 #endif
