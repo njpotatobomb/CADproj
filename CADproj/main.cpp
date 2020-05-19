@@ -103,7 +103,6 @@ int main()
 							CADLine* pNewLine=new CADLine();
 							objects.push_back(pNewLine);
 							pNewLine->init();
-							pNewLine->id
 
 							break;
 						}
