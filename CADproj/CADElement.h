@@ -68,4 +68,22 @@ public:
 protected:
 	CPoint start, end;
 };
+
+class CADCircle :public CADElement
+{
+public:
+	CADCircle();
+	~CADCircle();
+
+	void init();
+	void draw();
+	void move(int dx, int dy);
+	void modify();
+	void save(string path);
+	void calculateOrigin();
+
+protected:
+	CPoint center;
+	double radius;
+};
 #endif

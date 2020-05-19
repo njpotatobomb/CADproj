@@ -116,7 +116,9 @@ int main()
 						}
 						case 12:
 						{
-							//add circle
+							CADCircle* pNewCircle = new CADCircle();
+							objects.push_back(pNewCircle);
+							pNewCircle->init();
 
 							break;
 						}

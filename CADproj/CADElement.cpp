@@ -228,3 +228,92 @@ void CADRectangle::calculateOrigin()
 {
 	origin = CPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 }
+
+
+//================================
+CADCircle::CADCircle():CADElement()
+{
+	center = CPoint(0, 0);
+	radius = 0;
+}
+
+CADCircle::~CADCircle()
+{
+
+}
+
+void CADCircle::init()
+{
+	bool Ibuttondownflag = false;
+	moveMouseTo(SCREENWIDTH / 2, SCREENHEIGHT / 2);
+	int pointcount = 0;
+	MOUSEMSG mouse;
+	while (pointcount < 2)
+	{
+		mouse = GetMouseMsg();
+
+		switch (mouse.uMsg)
+		{
+		case WM_LBUTTONDOWN:
+		{
+			Ibuttondownflag = true;
+			break;
+		}
+		case WM_LBUTTONUP:
+		{
+			if (Ibuttondownflag)
+			{
+				Ibuttondownflag = false;
+
+				//left button pressed
+				pointcount++;
+				if (pointcount == 1)
+				{
+					center = CPoint(mouse.x, mouse.y);
+				}
+				else if (pointcount == 2)
+				{
+					radius = sqrt((mouse.x - center.x) * (mouse.x - center.x) + (mouse.y - center.y) * (mouse.y - center.y));
+				}
+			}
+			break;
+		}
+		case WM_LBUTTONDBLCLK:
+		{
+
+			break;
+		}
+		}
+
+		if (pointcount > 0 && pointcount < 2)
+			radius = sqrt((mouse.x - center.x) * (mouse.x - center.x) + (mouse.y - center.y) * (mouse.y - center.y));
+
+		refreshScreen();
+	}
+}
+
+void CADCircle::draw()
+{
+	circle(center.x, center.y, radius);
+}
+
+void CADCircle::move(int dx,int dy)
+{
+	CPoint delta(dx, dy);
+	center += delta;
+}
+
+void CADCircle::modify()
+{
+
+}
+
+void CADCircle::save(string path)
+{
+
+}
+
+void CADCircle::calculateOrigin()
+{
+	origin = center;
+}
