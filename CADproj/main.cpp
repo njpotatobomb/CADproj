@@ -118,10 +118,16 @@ int main()
 							{
 								for(auto& it:objects)
 									delete it;
+								objects.clear();
+
 								for(auto& it:buttons)
 									delete it;
+								buttons.clear();
+
 								for(auto& it:outline)
 									delete it;
+								outline.clear();
+
 								return 0;
 							}
 
@@ -220,7 +226,7 @@ int main()
 										it--;
 										coord=(*it)->getBottomLeft();
 										it++;
-									} else
+									}else
 									{
 										coord=CPoint(CANVASWIDTH+1,TEXTHEIGHT+1);
 									}
@@ -233,11 +239,27 @@ int main()
 								}
 							}
 							selectedOutline=nullptr;
+
 							break;
 						}
 						case 17:
 						{
 							//delete all
+
+							if(InputBox(nullptr,63,_T("Do you really want to delete all objects?\nPress \"Yes\" to continue,\"No\" to cancel."),
+								_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
+							{
+								for(auto& it:objects)
+									delete it;
+								objects.clear();
+
+								for(auto& it:outline)
+									delete it;
+								outline.clear();
+
+								selectedOutline=nullptr;
+								selectedObject=nullptr;
+							}
 
 							break;
 						}
