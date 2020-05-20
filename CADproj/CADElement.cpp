@@ -191,13 +191,12 @@ void CADLine::modify()
 
 }
 
-void CADLine::save()
+ofstream CADLine::save()
 {
-	ofstream fout;
-	fout.open("CADProject.txt",ios::app);
-	fout << getId() << '\t' << start.x << '\t' << start.y
+	ofstream os;
+	os << getId() << '\t' << start.x << '\t' << start.y
 							<< '\t' << end.x << '\t' << end.y << endl;
-	fout.close();
+	return os;
 }
 
 void CADLine::calculateOrigin()
@@ -205,10 +204,10 @@ void CADLine::calculateOrigin()
 	origin=CPoint((start.x+end.x)/2,(start.y+end.y)/2);
 }
 
-void CADLine::open(int pid,ifstream& os)
+void CADLine::open(int pid,ifstream& is)
 {
 	id = pid;
-	os >> start.x >> start.y >> end.x >> end.y;
+	is >> start.x >> start.y >> end.x >> end.y;
 	calculateOrigin();
 	draw();
 }
@@ -334,13 +333,12 @@ void CADRectangle::modify()
 
 }
 
-void CADRectangle::save()
+ofstream CADRectangle::save()
 {
-	ofstream fout;
-	fout.open("CADProject.txt",ios::app);
-	fout << getId() << '\t' << start.x << '\t' << start.y
+	ofstream os;
+	os << getId() << '\t' << start.x << '\t' << start.y
 		<< '\t' << end.x << '\t' << end.y << endl;
-	fout.close();
+	return os;
 }
 
 void CADRectangle::calculateOrigin()
@@ -348,10 +346,10 @@ void CADRectangle::calculateOrigin()
 	origin = CPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 }
 
-void CADRectangle::open(int pid, ifstream& os)
+void CADRectangle::open(int pid, ifstream& is)
 {
 	id = pid;
-	os>> start.x >> start.y >> end.x >> end.y;
+	is>> start.x >> start.y >> end.x >> end.y;
 	calculateOrigin();
 	draw();
 }
@@ -492,12 +490,11 @@ void CADCircle::modify()
 
 }
 
-void CADCircle::save()
+ofstream CADCircle::save()
 {
-	ofstream fout;
-	fout.open("CADProject.txt",ios::app);
-	fout << getId() << '\t' << center.x << '\t' << center.y << '\t' << radius << endl;
-	fout.close();
+	ofstream os;
+	os << getId() << '\t' << center.x << '\t' << center.y << '\t' << radius << endl;
+	return os;
 }
 
 void CADCircle::calculateOrigin()
@@ -505,10 +502,10 @@ void CADCircle::calculateOrigin()
 	origin = center;
 }
 
-void CADCircle::open(int pid,ifstream& os)
+void CADCircle::open(int pid,ifstream& is)
 {
 	id = pid;
-	os >> center.x >> center.y >> radius;
+	is >> center.x >> center.y >> radius;
 	calculateOrigin();
 	draw();
 }

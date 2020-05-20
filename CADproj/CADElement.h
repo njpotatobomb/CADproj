@@ -19,9 +19,9 @@ public:
 	virtual void draw()=0;
 	virtual void move(int dx,int dy)=0;
 	virtual void modify()=0;
-	virtual void save()=0;
+	virtual ofstream save()=0;
 	virtual void calculateOrigin()=0;
-	virtual void open(int pid,ifstream& os)=0;
+	virtual void open(int pid,ifstream& is)=0;
 
 	void setMouseOnFlag(bool state);
 	void setSelectedFlag(bool state);
@@ -50,9 +50,9 @@ public:
 	void draw();
 	void move(int dx,int dy);
 	void modify();
-	void save();
+	ofstream save();
 	void calculateOrigin();
-	void open(int pid,ifstream& os);
+	void open(int pid,ifstream& is);
 
 protected:
 	CPoint start,end;
@@ -71,9 +71,9 @@ public:
 	void draw();
 	void move(int dx, int dy);
 	void modify();
-	void save();
+	ofstream save();
 	void calculateOrigin();
-	void open(int pid,ifstream& os);
+	void open(int pid,ifstream& is);
 
 protected:
 	CPoint start, end;
@@ -91,9 +91,9 @@ public:
 	void draw();
 	void move(int dx, int dy);
 	void modify();
-	void save();
+	ofstream save();
 	void calculateOrigin();
-	void open(int pid,ifstream& os);
+	void open(int pid,ifstream& is);
 
 protected:
 	CPoint center;

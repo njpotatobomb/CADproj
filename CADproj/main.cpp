@@ -394,11 +394,13 @@ void moveMouseTo(int px,int py)
   */
 void save()
 {
-
+	ofstream fout;
+	fout.open("CADProject.txt");
 	for (int i = 0; i < objects.size(); i++)
 	{
-		objects[i]->save();
+		fout<<&(objects[i]->save());
 	}
+	fout.close();
 	InputBox(NULL, 55, _T("Saved!"), NULL);
 }
 
