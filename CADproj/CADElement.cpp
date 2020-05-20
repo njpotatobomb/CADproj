@@ -191,12 +191,10 @@ void CADLine::modify()
 
 }
 
-ofstream CADLine::save()
+void CADLine::save(ofstream& fout)
 {
-	ofstream os;
-	os << getId() << '\t' << start.x << '\t' << start.y
+	fout << getId() << '\t' << start.x << '\t' << start.y
 							<< '\t' << end.x << '\t' << end.y << endl;
-	return os;
 }
 
 void CADLine::calculateOrigin()
@@ -204,10 +202,10 @@ void CADLine::calculateOrigin()
 	origin=CPoint((start.x+end.x)/2,(start.y+end.y)/2);
 }
 
-void CADLine::open(int pid,ifstream& is)
+void CADLine::open(int pid,ifstream& os)
 {
 	id = pid;
-	is >> start.x >> start.y >> end.x >> end.y;
+	os >> start.x >> start.y >> end.x >> end.y;
 	calculateOrigin();
 	draw();
 }
@@ -333,12 +331,10 @@ void CADRectangle::modify()
 
 }
 
-ofstream CADRectangle::save()
+void CADRectangle::save(ofstream& fout)
 {
-	ofstream os;
-	os << getId() << '\t' << start.x << '\t' << start.y
+	fout << getId() << '\t' << start.x << '\t' << start.y
 		<< '\t' << end.x << '\t' << end.y << endl;
-	return os;
 }
 
 void CADRectangle::calculateOrigin()
@@ -346,10 +342,10 @@ void CADRectangle::calculateOrigin()
 	origin = CPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 }
 
-void CADRectangle::open(int pid, ifstream& is)
+void CADRectangle::open(int pid, ifstream& os)
 {
 	id = pid;
-	is>> start.x >> start.y >> end.x >> end.y;
+	os>> start.x >> start.y >> end.x >> end.y;
 	calculateOrigin();
 	draw();
 }
@@ -490,11 +486,9 @@ void CADCircle::modify()
 
 }
 
-ofstream CADCircle::save()
+void CADCircle::save(ofstream& fout)
 {
-	ofstream os;
-	os << getId() << '\t' << center.x << '\t' << center.y << '\t' << radius << endl;
-	return os;
+	fout << getId() << '\t' << center.x << '\t' << center.y << '\t' << radius << endl;
 }
 
 void CADCircle::calculateOrigin()
@@ -502,10 +496,10 @@ void CADCircle::calculateOrigin()
 	origin = center;
 }
 
-void CADCircle::open(int pid,ifstream& is)
+void CADCircle::open(int pid,ifstream& os)
 {
 	id = pid;
-	is >> center.x >> center.y >> radius;
+	os >> center.x >> center.y >> radius;
 	calculateOrigin();
 	draw();
 }

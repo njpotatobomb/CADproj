@@ -398,7 +398,7 @@ void save()
 	fout.open("CADProject.txt");
 	for (int i = 0; i < objects.size(); i++)
 	{
-		fout<<&(objects[i]->save());
+		objects[i]->save(fout);
 	}
 	fout.close();
 	InputBox(NULL, 55, _T("Saved!"), NULL);
