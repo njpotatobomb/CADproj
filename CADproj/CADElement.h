@@ -19,7 +19,7 @@ public:
 	virtual void draw()=0;
 	virtual void move(int dx,int dy)=0;
 	virtual void modify()=0;
-	virtual void save()=0;
+	virtual void save(ofstream& fout)=0;
 	virtual void calculateOrigin()=0;
 	virtual void open(int pid,ifstream& os)=0;
 
@@ -50,7 +50,7 @@ public:
 	void draw();
 	void move(int dx,int dy);
 	void modify();
-	void save();
+	void save(ofstream& fout);
 	void calculateOrigin();
 	void open(int pid,ifstream& os);
 
@@ -71,7 +71,7 @@ public:
 	void draw();
 	void move(int dx, int dy);
 	void modify();
-	void save();
+	void save(ofstream& fout);
 	void calculateOrigin();
 	void open(int pid,ifstream& os);
 
@@ -91,13 +91,33 @@ public:
 	void draw();
 	void move(int dx, int dy);
 	void modify();
-	void save();
+	void save(ofstream& fout);
 	void calculateOrigin();
 	void open(int pid,ifstream& os);
 
 protected:
 	CPoint center;
 	int radius;
+};
+
+
+
+class CADPolygon :public CADElement
+{
+public:
+	CADPolygon();
+	~CADPolygon();
+
+	void init();
+	void draw();
+	void move(int dx, int dy);
+	void modify();
+	void save(ofstream& fout);
+	void calculateOrigin();
+	void open(int pid, ifstream& os);
+
+protected:
+	vector<CPoint> PolygonPoints;
 };
 
 

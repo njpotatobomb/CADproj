@@ -191,13 +191,10 @@ void CADLine::modify()
 
 }
 
-void CADLine::save()
+void CADLine::save(ofstream& fout)
 {
-	ofstream fout;
-	fout.open("CADProject.txt",ios::app);
 	fout << getId() << '\t' << start.x << '\t' << start.y
 							<< '\t' << end.x << '\t' << end.y << endl;
-	fout.close();
 }
 
 void CADLine::calculateOrigin()
@@ -334,13 +331,10 @@ void CADRectangle::modify()
 
 }
 
-void CADRectangle::save()
+void CADRectangle::save(ofstream& fout)
 {
-	ofstream fout;
-	fout.open("CADProject.txt",ios::app);
 	fout << getId() << '\t' << start.x << '\t' << start.y
 		<< '\t' << end.x << '\t' << end.y << endl;
-	fout.close();
 }
 
 void CADRectangle::calculateOrigin()
@@ -380,7 +374,7 @@ CADCircle::~CADCircle()
 void CADCircle::init()
 {
 	if(InputBox(nullptr,63,_T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
-		_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
+		_T("CrappyCAD"),_T("Do not input here,I know it is ugly"),0,0,false))
 	{
 		int x=0,y=0;
 		TCHAR s[63];
@@ -492,12 +486,9 @@ void CADCircle::modify()
 
 }
 
-void CADCircle::save()
+void CADCircle::save(ofstream& fout)
 {
-	ofstream fout;
-	fout.open("CADProject.txt",ios::app);
 	fout << getId() << '\t' << center.x << '\t' << center.y << '\t' << radius << endl;
-	fout.close();
 }
 
 void CADCircle::calculateOrigin()
@@ -511,6 +502,111 @@ void CADCircle::open(int pid,ifstream& os)
 	os >> center.x >> center.y >> radius;
 	calculateOrigin();
 	draw();
+}
+
+
+
+/**
+  * @brief      CADPolygon functions
+  * @author	 SadCloud55
+  */
+CADPolygon::CADPolygon()
+{
+	id += 4000;
+}
+
+CADPolygon::~CADPolygon()
+{
+
+}
+
+void CADPolygon::init()
+{
+	moveMouseTo(SCREENWIDTH / 2, SCREENHEIGHT / 2);
+
+	bool Ibuttondblclkflag = false;
+	int pointcount = 0;
+	MOUSEMSG mouse;
+	while (!Ibuttondblclkflag)
+	{
+		mouse = GetMouseMsg();
+		switch (mouse.uMsg)
+		{
+		case WM_LBUTTONDOWN:
+		{
+			CPoint temp(mouse.x, mouse.y);
+			PolygonPoints.push_back(temp);
+		}
+		case WM_LBUTTONDBLCLK:
+		{
+			Ibuttondblclkflag = true;
+		}
+		}
+
+		refreshScreen();
+	}
+}
+
+void CADPolygon::draw()
+{
+	{
+		static COLORREF linecolor;
+		linecolor = getlinecolor();
+
+		if (mouseOnFlag)
+			setlinecolor(YELLOW);
+
+		if (selectedFlag)
+			setlinecolor(LIGHTBLUE);
+
+		for (int i = 0; i < PolygonPoints.size()-1; i++)
+		{
+			line(PolygonPoints[i].x, PolygonPoints[i].y,
+				   PolygonPoints[i + 1].x, PolygonPoints[i + 1].y);
+		}
+
+		line(PolygonPoints[PolygonPoints.size()].x, PolygonPoints[PolygonPoints.size()].y,
+			   PolygonPoints[0].x, PolygonPoints[0].y);
+
+		setlinecolor(linecolor);
+	}
+}
+
+void CADPolygon::move(int dx, int dy)
+{
+	CPoint delta(dx, dy);
+	for (int i=0; i < PolygonPoints.size(); i++)
+	{
+		PolygonPoints[i] += delta;
+	}
+}
+
+void CADPolygon::calculateOrigin()
+{
+	int origin_x=0, origin_y=0;
+	for (int i = 0; i < PolygonPoints.size(); i++)
+	{
+		origin_x += PolygonPoints[i].x;
+		origin_y += PolygonPoints[i].y;
+	}
+	origin_x /= PolygonPoints.size();
+	origin_y /= PolygonPoints.size();
+	origin = CPoint(origin_x,origin_y);
+}
+
+void CADPolygon::modify()
+{
+
+}
+
+void CADPolygon::save(ofstream& fout)
+{
+
+}
+
+void CADPolygon::open(int pid, ifstream& os)
+{
+
 }
 
 

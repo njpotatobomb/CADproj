@@ -18,6 +18,7 @@ public:
 	void setMouseOnFlag(bool state);
 	bool isMouseOn();
 	void setSelectedFlag(bool state);
+	void setLocation(int px,int py);
 	int getId();
 	CPoint getTopRight();
 	CPoint getBottomLeft();
