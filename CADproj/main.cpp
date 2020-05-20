@@ -88,6 +88,8 @@ int main()
 				lbuttondownflag=false;
 
 				//left button pressed
+
+				//button hit action
 				for(auto& it:buttons)
 				{
 					if(it->isMouseOn())
@@ -128,10 +130,10 @@ int main()
 									delete it;
 								outline.clear();
 
+								closegraph();
 								return 0;
 							}
 
-							closegraph();
 							break;
 						}
 						case 10:
@@ -286,6 +288,10 @@ int main()
 					}
 				}
 
+
+
+
+				//outline hit action
 				for(auto& it:outline)
 				{
 					if(it->isMouseOn())
