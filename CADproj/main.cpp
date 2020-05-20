@@ -188,6 +188,10 @@ int main()
 						{
 							//add polygon
 
+							CADPolygon* pNewPolygon = new CADPolygon();
+							objects.push_back(pNewPolygon);
+							pNewPolygon->init();
+
 							break;
 						}
 						case 14:

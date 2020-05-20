@@ -102,6 +102,26 @@ protected:
 
 
 
+class CADPolygon :public CADElement
+{
+public:
+	CADPolygon();
+	~CADPolygon();
+
+	void init();
+	void draw();
+	void move(int dx, int dy);
+	void modify();
+	void save(ofstream& fout);
+	void calculateOrigin();
+	void open(int pid, ifstream& os);
+
+protected:
+	vector<CPoint> PolygonPoints;
+};
+
+
+
 void checkUserInput(TCHAR* s,int nMaxCount,LPCTSTR pPrompt,LPCTSTR pTitle,LPCTSTR pDefault);
 
 
