@@ -536,10 +536,14 @@ void CADPolygon::init()
 		{
 			CPoint temp(mouse.x, mouse.y);
 			PolygonPoints.push_back(temp);
+
+			break;
 		}
 		case WM_LBUTTONDBLCLK:
 		{
 			Ibuttondblclkflag = true;
+
+			break;
 		}
 		}
 
@@ -549,27 +553,29 @@ void CADPolygon::init()
 
 void CADPolygon::draw()
 {
+	if(PolygonPoints.size()>1)
 	{
 		static COLORREF linecolor;
-		linecolor = getlinecolor();
+		linecolor=getlinecolor();
 
-		if (mouseOnFlag)
+		if(mouseOnFlag)
 			setlinecolor(YELLOW);
 
-		if (selectedFlag)
+		if(selectedFlag)
 			setlinecolor(LIGHTBLUE);
 
-		for (int i = 0; i < PolygonPoints.size()-1; i++)
+		for(int i=0; i<PolygonPoints.size()-1; i++)
 		{
-			line(PolygonPoints[i].x, PolygonPoints[i].y,
-				   PolygonPoints[i + 1].x, PolygonPoints[i + 1].y);
+			line(PolygonPoints[i].x,PolygonPoints[i].y,
+				PolygonPoints[i+1].x,PolygonPoints[i+1].y);
 		}
 
-		line(PolygonPoints[PolygonPoints.size()].x, PolygonPoints[PolygonPoints.size()].y,
-			   PolygonPoints[0].x, PolygonPoints[0].y);
+		line(PolygonPoints[PolygonPoints.size()-1].x,PolygonPoints[PolygonPoints.size()-1].y,
+			PolygonPoints[0].x,PolygonPoints[0].y);
 
 		setlinecolor(linecolor);
 	}
+
 }
 
 void CADPolygon::move(int dx, int dy)
