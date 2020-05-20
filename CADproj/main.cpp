@@ -122,6 +122,8 @@ int main()
 									delete it;
 								for(auto& it:outline)
 									delete it;
+
+								closegraph();
 								return 0;
 							}
 							break;
@@ -269,9 +271,6 @@ int main()
 	}
 
 	//outtextxy(300,300,_T("oops"));
-
-	cin.get();
-	closegraph();
 	return 0;
 }
 
