@@ -124,6 +124,8 @@ int main()
 									delete it;
 								return 0;
 							}
+
+							closegraph();
 							break;
 						}
 						case 10:
@@ -195,7 +197,42 @@ int main()
 						case 16:
 						{
 							//delete
+							for(auto it=objects.begin();it!=objects.end();it++)
+							{
+								if(*it==selectedObject)
+								{
+									delete (*it);
+									it=objects.erase(it);
+									break;
+								}
+							}
+							selectedObject=nullptr;
 
+							for(auto it=outline.begin();it!=outline.end();it++)
+							{
+								if(*it==selectedOutline)
+								{
+									delete (*it);
+									it=outline.erase(it);
+									CPoint coord;
+									if(it!=outline.begin())
+									{
+										it--;
+										coord=(*it)->getBottomLeft();
+										it++;
+									} else
+									{
+										coord=CPoint(CANVASWIDTH+1,TEXTHEIGHT+1);
+									}
+									for(auto otlit=it;otlit!=outline.end();otlit++)
+									{
+										(*otlit)->setLocation(coord.x,coord.y);
+										coord=(*otlit)->getBottomLeft();
+									}
+									break;
+								}
+							}
+							selectedOutline=nullptr;
 							break;
 						}
 						case 17:
@@ -267,11 +304,7 @@ int main()
 		//	pretime=clock();
 		//}
 	}
-
-	//outtextxy(300,300,_T("oops"));
-
-	cin.get();
-	closegraph();
+	
 	return 0;
 }
 
