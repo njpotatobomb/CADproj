@@ -76,6 +76,12 @@ void Button::setSelectedFlag(bool state)
 	selectedFlag=state;
 }
 
+void Button::setLocation(int px,int py)
+{
+	location=CPoint(px,py);
+	area={location.x,location.y,location.x+width,location.y+height};
+}
+
 int Button::getId()
 {
 	return id;
@@ -83,12 +89,12 @@ int Button::getId()
 
 CPoint Button::getTopRight()
 {
-	return CPoint(location.x+width,location.y);
+	return CPoint(location.x+width+1,location.y);
 }
 
 CPoint Button::getBottomLeft()
 {
-	return CPoint(location.x,location.y+height);
+	return CPoint(location.x,location.y+height+1);
 }
 
 
