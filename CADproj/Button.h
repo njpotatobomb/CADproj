@@ -37,8 +37,23 @@ protected:
 
 
 
-static LPCTSTR topmenu[]={_T("open"),_T("save"),_T("exit")};
-static LPCTSTR bottommenu[]={_T("add line"),_T("add rectangle"),_T("add circle"),_T("add polygon"),_T("modify"),_T("move"),_T("delete"),_T("delete all")};
+static LPCTSTR topmenu[]={
+	_T("open "),
+	_T("save"),
+	_T("help&&about"),
+	_T("exit")
+};
+static LPCTSTR bottommenu[]={
+	_T("add line"),
+	_T("add rectangle"),
+	_T("add circle"),
+	_T("add polygon"),
+	_T("modify"),
+	_T("move"),
+	_T("move all"),
+	_T("delete"),
+	_T("delete all")
+};
 static LPCTSTR deselectbutton=_T("deselect");
 
 
