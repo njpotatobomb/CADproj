@@ -208,17 +208,42 @@ int main()
 						{
 							//move
 
+							if(selectedObject)
+								selectedObject->grab();
+							else
+								InputBox(nullptr,63,_T("No object is selected.\nSelect an object first."),
+									_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,true);
+
 							break;
 						}
 						case 16:
 						{
 							//move all
 
+							int x=0,y=0;
+							TCHAR s[63];
+
+							memset(s,0,63*sizeof(TCHAR));
+							InputBox(s,63,_T("Input offset on x and y axis:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,false);
+							checkUserInput(s,63,"(-?[1-9][0-9]*|0),(-?[1-9][0-9]*|0)",_T("Input offset on x and y axis:\nInvalid user input!"),
+								_T("CrappyCAD"),_T("For example:\t0,0"));
+							_stscanf_s(s,_T("%d,%d"),&x,&y);
+							for(auto& it:objects)
+								it->move(x,y);
+
 							break;
 						}
 						case 17:
 						{
 							//delete
+
+							if(!selectedObject)
+							{
+								InputBox(nullptr,63,_T("No object is selected.\nSelect an object first."),
+									_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,true);
+								break;
+							}
+
 							for(auto it=objects.begin();it!=objects.end();it++)
 							{
 								if(*it==selectedObject)
@@ -458,6 +483,40 @@ void moveMouseTo(int px,int py)
 	ClientToScreen(hWnd,&point);
 	SetCursorPos(point.x,point.y);
 }
+
+
+
+/**
+  * @brief      check user input from InputBox() by regular expression
+  * @param   s,regexp,nMaxCount,pPrompt,pTitle,pDefault
+  * @retval     none
+  * @author	 njpotatobomb
+  */
+void checkUserInput(TCHAR* s,int nMaxCount,const char* regexp,LPCTSTR pPrompt,LPCTSTR pTitle,LPCTSTR pDefault)
+{
+	while(1)
+	{
+		static int length;
+		static char* str;
+
+		//convert to char*. could not find a TCHAR version of regex_match
+		length=WideCharToMultiByte(CP_ACP,0,s,-1,NULL,0,NULL,NULL);
+		str=new char[length*sizeof(char)];
+		WideCharToMultiByte(CP_ACP,0,s,-1,str,length,NULL,NULL);
+
+		if(regex_match(str,(regex)regexp))
+		{
+			delete[] str;
+			break;
+		} else
+		{
+			memset(s,0,nMaxCount*sizeof(TCHAR));
+			InputBox(s,nMaxCount,pPrompt,pTitle,pDefault,0,0,true);
+		}
+
+	}
+}
+//"(-?[1-9][0-9]*|0),(-?[1-9][0-9]*|0)" for move
 
 
 

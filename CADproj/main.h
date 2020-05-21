@@ -34,8 +34,10 @@
 
 void init();
 void refreshScreen();
-void moveMouseTo(int px,int py);
 void save();
 void open();
+
+void moveMouseTo(int px,int py);
+void checkUserInput(TCHAR* s,int nMaxCount,const char* regexp,LPCTSTR pPrompt,LPCTSTR pTitle,LPCTSTR pDefault);
 
 #endif
