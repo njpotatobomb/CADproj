@@ -220,16 +220,81 @@ int main()
 						{
 							//move all
 
-							int x=0,y=0;
-							TCHAR s[63];
+							if(InputBox(nullptr,63,_T("Do you want to manually input offset data?\nPress \"Yes\" to continue,\"No\" to drag with mouse."),
+								_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
+							{
+								int x=0,y=0;
+								TCHAR s[63];
 
-							memset(s,0,63*sizeof(TCHAR));
-							InputBox(s,63,_T("Input offset on x and y axis:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,false);
-							checkUserInput(s,63,"(-?[1-9][0-9]*|0),(-?[1-9][0-9]*|0)",_T("Input offset on x and y axis:\nInvalid user input!"),
-								_T("CrappyCAD"),_T("For example:\t0,0"));
-							_stscanf_s(s,_T("%d,%d"),&x,&y);
-							for(auto& it:objects)
-								it->move(x,y);
+								memset(s,0,63*sizeof(TCHAR));
+								InputBox(s,63,_T("Input offset on x and y axis:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,false);
+								checkUserInput(s,63,"(-?[1-9][0-9]*|0),(-?[1-9][0-9]*|0)",_T("Input offset on x and y axis:\nInvalid user input!"),
+									_T("CrappyCAD"),_T("For example:\t0,0"));
+								_stscanf_s(s,_T("%d,%d"),&x,&y);
+								for(auto& it:objects)
+									it->move(x,y);
+							}else
+							{
+								CPoint tmporigin(0,0);
+
+								for(auto& it:objects)
+									tmporigin+=it->getOrigin();
+								tmporigin.x/=objects.size();
+								tmporigin.y/=objects.size();
+
+								moveMouseTo(tmporigin.x,tmporigin.y);
+								CPoint premouse=tmporigin;
+								CPoint delta;
+								
+								bool lbuttondownflag=false;
+								int pointcount=0;
+								MOUSEMSG mouse;
+								while(pointcount<1)
+								{
+									mouse=GetMouseMsg();
+
+									switch(mouse.uMsg)
+									{
+									case WM_LBUTTONDOWN:
+									{
+										lbuttondownflag=true;
+										break;
+									}
+									case WM_LBUTTONUP:
+									{
+										if(lbuttondownflag)
+										{
+											lbuttondownflag=false;
+
+											//left button pressed
+											pointcount++;
+											if(pointcount==1)
+											{
+												delta=CPoint(mouse.x,mouse.y)-premouse;
+												for(auto& it:objects)
+													it->move(delta.x,delta.y);
+											}
+										}
+										break;
+									}
+									case WM_LBUTTONDBLCLK:
+									{
+
+										break;
+									}
+									}
+
+									if(pointcount==0)
+									{
+										delta=CPoint(mouse.x,mouse.y)-premouse;
+										for(auto& it:objects)
+											it->move(delta.x,delta.y);
+										premouse=CPoint(mouse.x,mouse.y);
+									}
+
+									refreshScreen();
+								}
+							}
 
 							break;
 						}

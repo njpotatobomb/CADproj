@@ -41,7 +41,7 @@ CADElement::~CADElement()
 	{
 		if(*it==id)
 		{
-			idgen.erase(it);
+			it=idgen.erase(it);
 			break;
 		}
 	}
