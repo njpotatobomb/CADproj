@@ -492,7 +492,7 @@ void open()
 	ifstream fin;
 	fin.open("CADProject.txt");
 	int tempid;
-	while (!fin.eof())
+	while (!fin.eof()&&!fin.fail())
 	{
 		bool test = true;
 		fin >> tempid;
