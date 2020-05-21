@@ -16,7 +16,7 @@ Button::Button(int pid,int px,int py,LPCTSTR ptext)
 	_tcscpy_s(text,_tcslen(ptext)+1,ptext);
 
 	height=TEXTHEIGHT;
-	width=int(_tcslen(text)*TEXTHEIGHT*(0.9-0.03*_tcslen(text)));                //textwidth() crashes for no reason
+	width=int(_tcslen(text)*TEXTHEIGHT*0.6);                //textwidth() crashes for no reason
 
 	area={location.x,location.y,location.x+width,location.y+height};
 

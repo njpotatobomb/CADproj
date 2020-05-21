@@ -28,6 +28,14 @@ Button* selectedOutline=nullptr;
   */
 int main()
 {
+	//setaspectratio(1,1);
+	//float px=0;
+	//float py=0;
+	////getaspectratio(px,py);		//bug???????
+	//TCHAR s[127];
+	//_stprintf_s(s,127,_T("%f,%f"),px,py);
+	//outtextxy(0,0,s);
+
 	init();
 	refreshScreen();
 
@@ -105,18 +113,6 @@ int main()
 							break;
 						}
 						case 02:
-						{
-							//help&about
-
-							InputBox(nullptr,63,_T(
-								"Do you really want to read?\n"
-								"helphelphelphelphelphelphelphelp\n"
-								"aboutaboutaboutaboutaboutabout"
-							));
-
-							break;
-						}
-						case 03:
 						{
 							//exit
 							if(InputBox(nullptr,63,_T("Do you really want to exit?\nPress \"Yes\" to continue,\"No\" to cancel."),
@@ -215,12 +211,6 @@ int main()
 						}
 						case 16:
 						{
-							//move all
-
-							break;
-						}
-						case 17:
-						{
 							//delete
 							for(auto it=objects.begin();it!=objects.end();it++)
 							{
@@ -261,7 +251,7 @@ int main()
 
 							break;
 						}
-						case 18:
+						case 17:
 						{
 							//delete all
 
