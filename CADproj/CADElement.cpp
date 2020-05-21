@@ -265,7 +265,6 @@ void CADLine::grab()
 
 }
 
-
 void CADLine::modify()
 {
 
@@ -721,6 +720,8 @@ void CADCircle::open(int pid,ifstream& os)
 	calculateOrigin();
 	draw();
 }
+
+
 
 
 

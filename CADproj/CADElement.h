@@ -11,8 +11,6 @@ class CADElement
 {
 public:
 	CADElement();
-	//virtual CADElement(const CADElement& insta)=0;
-	//virtual CADElement& operator=(const CADElement& insta)=0;
 	~CADElement();
 
 	virtual void init()=0;
