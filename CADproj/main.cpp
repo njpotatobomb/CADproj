@@ -208,6 +208,9 @@ int main()
 						{
 							//move
 
+							if(selectedObject)
+								selectedObject->grab();
+
 							break;
 						}
 						case 16:

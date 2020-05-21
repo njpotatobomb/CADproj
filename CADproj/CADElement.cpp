@@ -188,6 +188,81 @@ void CADLine::move(int dx,int dy)
 	end+=delta;
 }
 
+void CADLine::grab()
+{
+	if(InputBox(nullptr,63,_T("Do you want to manually input offset data?\nPress \"Yes\" to continue,\"No\" to drag with mouse."),
+		_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
+	{
+		int x=0,y=0;
+		TCHAR s[63];
+
+		memset(s,0,63*sizeof(TCHAR));
+		InputBox(s,63,_T("Input offset on x and y axis:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
+		checkUserInput(s,63,"(-?[1-9][0-9]*|0),(-?[1-9][0-9]*|0)",_T("Input offset on x and y axis:\nInvalid user input!"),
+			_T("CrappyCAD"),_T("For example:\t0,0"));
+		_stscanf_s(s,_T("%d,%d"),&x,&y);
+		move(x,y);
+
+	} else
+	{
+		moveMouseTo(origin.x,origin.y);
+
+		CPoint tmpstart=start;
+		CPoint tmpend=end;
+		CPoint delta;
+
+		bool lbuttondownflag=false;
+		int pointcount=0;
+		MOUSEMSG mouse;
+		while(pointcount<1)
+		{
+			mouse=GetMouseMsg();
+
+			switch(mouse.uMsg)
+			{
+			case WM_LBUTTONDOWN:
+			{
+				lbuttondownflag=true;
+				break;
+			}
+			case WM_LBUTTONUP:
+			{
+				if(lbuttondownflag)
+				{
+					lbuttondownflag=false;
+
+					//left button pressed
+					pointcount++;
+					if(pointcount==1)
+					{
+						delta=CPoint(mouse.x,mouse.y);
+						start=tmpstart+delta;
+						end=tmpend+delta;
+					}
+				}
+				break;
+			}
+			case WM_LBUTTONDBLCLK:
+			{
+
+				break;
+			}
+			}
+
+			if(pointcount==0)
+			{
+				delta=CPoint(mouse.x,mouse.y);
+				start=tmpstart+delta;
+				end=tmpend+delta;
+			}
+
+			refreshScreen();
+		}
+
+	}
+
+}
+
 void CADLine::modify()
 {
 
@@ -328,6 +403,10 @@ void CADRectangle::move(int dx, int dy)
 	CPoint delta(dx, dy);
 	start += delta;
 	end += delta;
+}
+
+void CADRectangle::grab()
+{
 }
 
 void CADRectangle::modify()
@@ -472,6 +551,10 @@ void CADCircle::move(int dx,int dy)
 	center += delta;
 }
 
+void CADCircle::grab()
+{
+}
+
 void CADCircle::modify()
 {
 
@@ -576,6 +659,10 @@ void CADPolygon::move(int dx, int dy)
 	{
 		PolygonPoints[i] += delta;
 	}
+}
+
+void CADPolygon::grab()
+{
 }
 
 void CADPolygon::calculateOrigin()
