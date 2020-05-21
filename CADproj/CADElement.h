@@ -18,7 +18,6 @@ public:
 	virtual void init()=0;
 	virtual void draw()=0;
 	virtual void move(int dx,int dy)=0;
-	virtual void grab()=0;                //which is a complicated move function allowing both operate method
 	virtual void modify()=0;
 	virtual void save(ofstream& fout)=0;
 	virtual void calculateOrigin()=0;
@@ -50,7 +49,6 @@ public:
 	void init();
 	void draw();
 	void move(int dx,int dy);
-	void grab();
 	void modify();
 	void save(ofstream& fout);
 	void calculateOrigin();
@@ -72,7 +70,6 @@ public:
 	void init();
 	void draw();
 	void move(int dx, int dy);
-	void grab();
 	void modify();
 	void save(ofstream& fout);
 	void calculateOrigin();
@@ -93,7 +90,6 @@ public:
 	void init();
 	void draw();
 	void move(int dx, int dy);
-	void grab();
 	void modify();
 	void save(ofstream& fout);
 	void calculateOrigin();
@@ -115,7 +111,6 @@ public:
 	void init();
 	void draw();
 	void move(int dx, int dy);
-	void grab();
 	void modify();
 	void save(ofstream& fout);
 	void calculateOrigin();
@@ -127,7 +122,7 @@ protected:
 
 
 
-void checkUserInput(TCHAR* s,int nMaxCount,LPCTSTR pPrompt,LPCTSTR pTitle,LPCTSTR pDefault);
+void checkUserInput(TCHAR* s,int nMaxCount,const char* regexp,LPCTSTR pPrompt,LPCTSTR pTitle,LPCTSTR pDefault);
 
 
 

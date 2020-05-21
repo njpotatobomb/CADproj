@@ -100,13 +100,15 @@ void CADLine::init()
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input coordinate of starting point:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
-		checkUserInput(s,63,_T("Input coordinate of starting point:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t0,0"));
+		checkUserInput(s,63,"([1-9][0-9]*|0),([1-9][0-9]*|0)",_T("Input coordinate of starting point:\nInvalid user input!"),
+			_T("CrappyCAD"),_T("For example:\t0,0"));
 		_stscanf_s(s,_T("%d,%d"),&x,&y);
 		start=CPoint(x,y+TEXTHEIGHT+1);
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input coordinate of ending point:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
-		checkUserInput(s,63,_T("Input coordinate of ending point:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t0,0"));
+		checkUserInput(s,63,"([1-9][0-9]*|0),([1-9][0-9]*|0)",_T("Input coordinate of ending point:\nInvalid user input!"),
+			_T("CrappyCAD"),_T("For example:\t0,0"));
 		_stscanf_s(s,_T("%d,%d"),&x,&y);
 		end=CPoint(x,y+TEXTHEIGHT+1);
 
@@ -186,81 +188,6 @@ void CADLine::move(int dx,int dy)
 	end+=delta;
 }
 
-void CADLine::grab()
-{
-	if(InputBox(nullptr,63,_T("Do you want to manually input offset data?\nPress \"Yes\" to continue,\"No\" to drag with mouse."),
-		_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
-	{
-		int x=0,y=0;
-		TCHAR s[63];
-
-		memset(s,0,63*sizeof(TCHAR));
-		InputBox(s,63,_T("Input offset on x and y axis:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
-		checkUserInput(s,63,"(-?[1-9][0-9]*|0),(-?[1-9][0-9]*|0)",_T("Input offset on x and y axis:\nInvalid user input!"),
-			_T("CrappyCAD"),_T("For example:\t0,0"));
-		_stscanf_s(s,_T("%d,%d"),&x,&y);
-		move(x,y);
-
-	} else
-	{
-		moveMouseTo(origin.x,origin.y);
-
-		CPoint tmpstart=start;
-		CPoint tmpend=end;
-		CPoint delta;
-
-		bool lbuttondownflag=false;
-		int pointcount=0;
-		MOUSEMSG mouse;
-		while(pointcount<1)
-		{
-			mouse=GetMouseMsg();
-
-			switch(mouse.uMsg)
-			{
-			case WM_LBUTTONDOWN:
-			{
-				lbuttondownflag=true;
-				break;
-			}
-			case WM_LBUTTONUP:
-			{
-				if(lbuttondownflag)
-				{
-					lbuttondownflag=false;
-
-					//left button pressed
-					pointcount++;
-					if(pointcount==1)
-					{
-						delta=CPoint(mouse.x,mouse.y);
-						start=tmpstart+delta;
-						end=tmpend+delta;
-					}
-				}
-				break;
-			}
-			case WM_LBUTTONDBLCLK:
-			{
-
-				break;
-			}
-			}
-
-			if(pointcount==0)
-			{
-				delta=CPoint(mouse.x,mouse.y);
-				start=tmpstart+delta;
-				end=tmpend+delta;
-			}
-
-			refreshScreen();
-		}
-
-	}
-
-}
-
 void CADLine::modify()
 {
 
@@ -315,13 +242,15 @@ void CADRectangle::init()
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input coordinate of topleft corner:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
-		checkUserInput(s,63,_T("Input coordinate of starting point:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t0,0"));
+		checkUserInput(s,63,"([1-9][0-9]*|0),([1-9][0-9]*|0)",_T("Input coordinate of starting point:\nInvalid user input!"),
+			_T("CrappyCAD"),_T("For example:\t0,0"));
 		_stscanf_s(s,_T("%d,%d"),&x,&y);
 		start=CPoint(x,y+TEXTHEIGHT+1);
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input width and height:"),_T("CrappyCAD"),_T("For example:\t200,100"),0,0,true);
-		checkUserInput(s,63,_T("Input width and height:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t200,100"));
+		checkUserInput(s,63,"([1-9][0-9]*|0),([1-9][0-9]*|0)",_T("Input width and height:\nInvalid user input!"),
+			_T("CrappyCAD"),_T("For example:\t200,100"));
 		_stscanf_s(s,_T("%d,%d"),&x,&y);
 		end=CPoint(start.x+x,start.y+y);
 
@@ -401,10 +330,6 @@ void CADRectangle::move(int dx, int dy)
 	end += delta;
 }
 
-void CADRectangle::grab()
-{
-}
-
 void CADRectangle::modify()
 {
 
@@ -460,28 +385,15 @@ void CADCircle::init()
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input coordinate of center:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
-		checkUserInput(s,63,_T("Input coordinate of center:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t0,0"));
+		checkUserInput(s,63,"([1-9][0-9]*|0),([1-9][0-9]*|0)",_T("Input coordinate of center:\nInvalid user input!"),
+			_T("CrappyCAD"),_T("For example:\t0,0"));
 		_stscanf_s(s,_T("%d,%d"),&x,&y);
 		center=CPoint(x,y+TEXTHEIGHT+1);
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input radius:"),_T("CrappyCAD"),_T("For example:\t100"),0,0,true);
-		checkUserInput(s,63,_T("Input radius:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t100"));
-		while(1)                //only one that is slightly different in checking logic,wont create a new function just for this
-		{
-			int i;
-			for(i=0;s[i]!=0;i++)
-				if(!(s[i]>='0'&&s[i]<='9'))
-					break;
-			if(s[i]!=0)
-			{
-				memset(s,0,63*sizeof(TCHAR));
-				InputBox(s,63,_T("Input radius:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t100"),0,0,true);
-			} else
-			{
-				break;
-			}
-		}
+		checkUserInput(s,63,"[1-9][0-9]*|0",_T("Input radius:\nInvalid user input!"),
+			_T("CrappyCAD"),_T("For example:\t100"));
 		_stscanf_s(s,_T("%d"),&x);
 		radius=x;
 
@@ -560,10 +472,6 @@ void CADCircle::move(int dx,int dy)
 	center += delta;
 }
 
-void CADCircle::grab()
-{
-}
-
 void CADCircle::modify()
 {
 
@@ -619,11 +527,13 @@ void CADPolygon::init()
 		{
 			CPoint temp(mouse.x, mouse.y);
 			PolygonPoints.push_back(temp);
+
 			break;
 		}
 		case WM_LBUTTONDBLCLK:
 		{
 			Ibuttondblclkflag = true;
+
 			break;
 		}
 		}
@@ -634,27 +544,29 @@ void CADPolygon::init()
 
 void CADPolygon::draw()
 {
+	if(PolygonPoints.size()>1)
 	{
 		static COLORREF linecolor;
-		linecolor = getlinecolor();
+		linecolor=getlinecolor();
 
-		if (mouseOnFlag)
+		if(mouseOnFlag)
 			setlinecolor(YELLOW);
 
-		if (selectedFlag)
+		if(selectedFlag)
 			setlinecolor(LIGHTBLUE);
 
-		for (int i = 0; i < PolygonPoints.size()-1; i++)
+		for(int i=0; i<PolygonPoints.size()-1; i++)
 		{
-			line(PolygonPoints[i].x, PolygonPoints[i].y,
-				   PolygonPoints[i + 1].x, PolygonPoints[i + 1].y);
+			line(PolygonPoints[i].x,PolygonPoints[i].y,
+				PolygonPoints[i+1].x,PolygonPoints[i+1].y);
 		}
 
-		line(PolygonPoints[PolygonPoints.size()].x, PolygonPoints[PolygonPoints.size()].y,
-			   PolygonPoints[0].x, PolygonPoints[0].y);
+		line(PolygonPoints[PolygonPoints.size()-1].x,PolygonPoints[PolygonPoints.size()-1].y,
+			PolygonPoints[0].x,PolygonPoints[0].y);
 
 		setlinecolor(linecolor);
 	}
+
 }
 
 void CADPolygon::move(int dx, int dy)
@@ -666,10 +578,6 @@ void CADPolygon::move(int dx, int dy)
 	}
 }
 
-void CADPolygon::grab()
-{
-}
-
 void CADPolygon::calculateOrigin()
 {
 	int origin_x=0, origin_y=0;
@@ -678,8 +586,8 @@ void CADPolygon::calculateOrigin()
 		origin_x += PolygonPoints[i].x;
 		origin_y += PolygonPoints[i].y;
 	}
-	origin_x /= PolygonPoints.size();
-	origin_y /= PolygonPoints.size();
+	origin_x /= (int)PolygonPoints.size();
+	origin_y /= (int)PolygonPoints.size();
 	origin = CPoint(origin_x,origin_y);
 }
 
@@ -703,26 +611,33 @@ void CADPolygon::open(int pid, ifstream& os)
 
 
 /**
-  * @brief      check if user input from InputBox() is *,* ,very simple check
-  * @param   s,nMaxCount,pPrompt,pTitle,pDefault
+  * @brief      check user input from InputBox() by regular expression
+  * @param   s,regexp,nMaxCount,pPrompt,pTitle,pDefault
   * @retval     none
   * @author	 njpotatobomb
   */
-void checkUserInput(TCHAR* s,int nMaxCount,LPCTSTR pPrompt,LPCTSTR pTitle,LPCTSTR pDefault)
+void checkUserInput(TCHAR* s,int nMaxCount,const char* regexp,LPCTSTR pPrompt,LPCTSTR pTitle,LPCTSTR pDefault)
 {
 	while(1)
 	{
-		int i;
-		for(i=0;s[i]!=0;i++)
-			if(!((s[i]>='0'&&s[i]<='9')||s[i]==','||s[i]=='-'))
-				break;
-		if(s[i]!=0)
+		static int length;
+		static char* str;
+
+		//convert to char*. could not find a TCHAR version of regex_match
+		length=WideCharToMultiByte(CP_ACP,0,s,-1,NULL,0,NULL,NULL);
+		str=new char[length*sizeof(char)];
+		WideCharToMultiByte(CP_ACP,0,s,-1,str,length,NULL,NULL);
+
+		if(regex_match(str,(regex)regexp))
+		{
+			delete[] str;
+			break;
+		} else
 		{
 			memset(s,0,nMaxCount*sizeof(TCHAR));
 			InputBox(s,nMaxCount,pPrompt,pTitle,pDefault,0,0,true);
-		} else
-		{
-			break;
 		}
+
 	}
 }
+//"(-?[1-9][0-9]*|0),(-?[1-9][0-9]*|0)" for move
