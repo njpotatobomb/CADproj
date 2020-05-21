@@ -536,10 +536,12 @@ void CADPolygon::init()
 		{
 			CPoint temp(mouse.x, mouse.y);
 			PolygonPoints.push_back(temp);
+			break;
 		}
 		case WM_LBUTTONDBLCLK:
 		{
 			Ibuttondblclkflag = true;
+			break;
 		}
 		}
 
