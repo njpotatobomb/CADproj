@@ -638,6 +638,12 @@ void open()
 				CADLine* pnewline = new CADLine();
 				pnewline->open(tempid, fin);
 				objects.push_back(pnewline);
+
+				CPoint coord = outline.empty() ? CPoint(CANVASWIDTH + 1, TEXTHEIGHT + 1) : outline.back()->getBottomLeft();
+				TCHAR s[63];
+				_stprintf_s(s, _T("Line%d"), pnewline->getId());
+				Button* pNewButton = new Button(pnewline->getId(), coord.x, coord.y, s);
+				outline.push_back(pNewButton);
 			}
 			break;
 		}
@@ -652,6 +658,12 @@ void open()
 				CADRectangle* pnewrectangle = new CADRectangle();
 				pnewrectangle->open(tempid, fin);
 				objects.push_back(pnewrectangle);
+
+				CPoint coord = outline.empty() ? CPoint(CANVASWIDTH + 1, TEXTHEIGHT + 1) : outline.back()->getBottomLeft();
+				TCHAR s[63];
+				_stprintf_s(s, _T("Rectangle%d"), pnewrectangle->getId());
+				Button* pNewButton = new Button(pnewrectangle->getId(), coord.x, coord.y, s);
+				outline.push_back(pNewButton);
 			}
 			break;
 		}
@@ -666,12 +678,33 @@ void open()
 				CADCircle* pnewcircle = new CADCircle();
 				pnewcircle->open(tempid, fin);
 				objects.push_back(pnewcircle);
+
+				CPoint coord = outline.empty() ? CPoint(CANVASWIDTH + 1, TEXTHEIGHT + 1) : outline.back()->getBottomLeft();
+				TCHAR s[63];
+				_stprintf_s(s, _T("Circle%d"), pnewcircle->getId());
+				Button* pNewButton = new Button(pnewcircle->getId(), coord.x, coord.y, s);
+				outline.push_back(pNewButton);
 			}
 			break;
 		}
 		case 4://open a Polygon
 		{
+			for (int i = 0; i < objects.size(); i++)
+			{
+				if (objects[i]->getId() == tempid)   test = false;
+			}
+			if (test)
+			{
+				CADPolygon* pnewpolygon = new CADPolygon();
+				pnewpolygon->open(tempid, fin);
+				objects.push_back(pnewpolygon);
 
+				CPoint coord = outline.empty() ? CPoint(CANVASWIDTH + 1, TEXTHEIGHT + 1) : outline.back()->getBottomLeft();
+				TCHAR s[63];
+				_stprintf_s(s, _T("Polygon%d"), pnewpolygon->getId());
+				Button* pNewButton = new Button(pnewpolygon->getId(), coord.x, coord.y, s);
+				outline.push_back(pNewButton);
+			}
 			break;
 
 		}
