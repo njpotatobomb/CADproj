@@ -196,6 +196,11 @@ int main()
 							objects.push_back(pNewPolygon);
 							pNewPolygon->init();
 
+							CPoint coord = outline.empty() ? CPoint(CANVASWIDTH + 1, TEXTHEIGHT + 1) : outline.back()->getBottomLeft();
+							TCHAR s[63];
+							_stprintf_s(s, _T("Polygon%d"), pNewPolygon->getId());
+							Button* pNewButton = new Button(pNewPolygon->getId(), coord.x, coord.y, s);
+							outline.push_back(pNewButton);
 							break;
 						}
 						case 14:

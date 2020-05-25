@@ -741,59 +741,111 @@ CADPolygon::~CADPolygon()
 
 void CADPolygon::init()
 {
-	moveMouseTo(SCREENWIDTH / 2, SCREENHEIGHT / 2);
-
-	bool Ibuttondblclkflag = false;
-	int pointcount = 0;
-	MOUSEMSG mouse;
-	while (!Ibuttondblclkflag)
+	if (InputBox(nullptr, 63, _T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
+		_T("CrappyCAD"), _T("Do not input here,I kown it is ugly"), 0, 0, false))
 	{
-		mouse = GetMouseMsg();
-		switch (mouse.uMsg)
-		{
-		case WM_LBUTTONDOWN:
-		{
-			CPoint temp(mouse.x, mouse.y);
-			PolygonPoints.push_back(temp);
+		int x = 0, y = 0;
+		TCHAR s[63];
 
-			break;
-		}
-		case WM_LBUTTONDBLCLK:
+		while (InputBox(s, 63, _T("Input coordinate of points in sequence:\nPress \"Yes\" to continue,\"No\" to stop."),
+			_T("CrappyCAD"), _T("For example:\t0,0"), 0, 0, false))
 		{
-			Ibuttondblclkflag = true;
+			_stscanf_s(s, _T("%d,%d"), &x, &y);
+			CPoint temppoint(x, y + TEXTHEIGHT + 1);
+			PolygonPoints.push_back(temppoint);
+        }
 
-			break;
-		}
-		}
-
-		refreshScreen();
 	}
+	else
+	{
+
+			moveMouseTo(SCREENWIDTH / 2, SCREENHEIGHT / 2);
+
+			bool lbuttondownflag = false;
+			bool Rbuttondownflag = false;
+			bool endflag = false;
+			int pointcount = 0;
+			MOUSEMSG mouse;
+			while (!endflag)
+			{
+				mouse = GetMouseMsg();
+
+				switch (mouse.uMsg)
+				{
+				case WM_LBUTTONDOWN:
+				{
+					lbuttondownflag = true;
+					break;
+				}
+				case WM_LBUTTONUP:
+				{
+					if (lbuttondownflag)
+					{
+						lbuttondownflag = false;
+
+						pointcount++;
+						CPoint temppoint(mouse.x, mouse.y);
+						PolygonPoints.push_back(temppoint);
+					}
+					break;
+				}
+				case WM_LBUTTONDBLCLK:
+				{
+
+					break;
+				}
+				case WM_RBUTTONDOWN:
+				{
+					Rbuttondownflag = true;
+					break;
+				}
+				case WM_RBUTTONUP:
+				{
+					PolygonPoints.push_back(CPoint(mouse.x, mouse.y));
+					endflag=true;
+					break;
+				}
+				}
+
+				refreshScreen();
+			}
+
+	}
+		calculateOrigin();
 }
+
 
 void CADPolygon::draw()
 {
-	if(PolygonPoints.size()>1)
+
+	static COLORREF linecolor;
+	linecolor=getlinecolor();
+
+	if(mouseOnFlag)
+		setlinecolor(YELLOW);
+
+	if(selectedFlag)
+		setlinecolor(LIGHTBLUE);
+
+		//CPoint *PolygonPointsArr=new CPoint[PolygonPoints.size()];
+		//for (int i = 0; i < PolygonPoints.size(); i++)
+		//{
+		//	PolygonPointsArr[i].x = PolygonPoints[i].x;
+		//	PolygonPointsArr[i].y = PolygonPoints[i].y;
+		//}
+		//polygon(PolygonPointsArr,PolygonPoints.size());
+	if (!PolygonPoints.empty())
 	{
-		static COLORREF linecolor;
-		linecolor=getlinecolor();
-
-		if(mouseOnFlag)
-			setlinecolor(YELLOW);
-
-		if(selectedFlag)
-			setlinecolor(LIGHTBLUE);
-
-		for(int i=0; i<PolygonPoints.size()-1; i++)
+		for (int i = 0; i < PolygonPoints.size() - 1; i++)
 		{
-			line(PolygonPoints[i].x,PolygonPoints[i].y,
-				PolygonPoints[i+1].x,PolygonPoints[i+1].y);
+			line(PolygonPoints[i].x, PolygonPoints[i].y,
+				PolygonPoints[i + 1].x, PolygonPoints[i + 1].y);
 		}
 
-		line(PolygonPoints[PolygonPoints.size()-1].x,PolygonPoints[PolygonPoints.size()-1].y,
-			PolygonPoints[0].x,PolygonPoints[0].y);
-
-		setlinecolor(linecolor);
+		line(PolygonPoints[PolygonPoints.size() - 1].x, PolygonPoints[PolygonPoints.size() - 1].y,
+			PolygonPoints[0].x, PolygonPoints[0].y);
 	}
+	setlinecolor(linecolor);
 
 }
 
@@ -809,6 +861,81 @@ void CADPolygon::move(int dx, int dy)
 
 void CADPolygon::grab()
 {
+	if (InputBox(nullptr, 63, _T("Do you want to manually input offset data?\nPress \"Yes\" to continue,\"No\" to drag with mouse."),
+		_T("CrappyCAD"), _T("Do not input here,I kown it is ugly"), 0, 0, false))
+	{
+		int x = 0, y = 0;
+		TCHAR s[63];
+
+		memset(s, 0, 63 * sizeof(TCHAR));
+		InputBox(s, 63, _T("Input offset on x and y axis:"), _T("CrappyCAD"), _T("For example:\t0,0"), 0, 0, true);
+		checkUserInput(s, 63, "(-?[1-9][0-9]*|0),(-?[1-9][0-9]*|0)", _T("Input offset on x and y axis:\nInvalid user input!"),
+			_T("CrappyCAD"), _T("For example:\t0,0"));
+		_stscanf_s(s, _T("%d,%d"), &x, &y);
+		move(x, y);
+
+	}
+	else
+	{
+		moveMouseTo(origin.x, origin.y);
+
+		vector<CPoint> temppoints = PolygonPoints;
+		CPoint delta;
+
+		bool lbuttondownflag = false;
+		int pointcount = 0;
+		MOUSEMSG mouse;
+		while (pointcount < 1)
+		{
+			mouse = GetMouseMsg();
+
+			switch (mouse.uMsg)
+			{
+			case WM_LBUTTONDOWN:
+			{
+				lbuttondownflag = true;
+				break;
+			}
+			case WM_LBUTTONUP:
+			{
+				if (lbuttondownflag)
+				{
+					lbuttondownflag = false;
+
+					//left button pressed
+					pointcount++;
+					if (pointcount == 1)
+					{
+						delta = CPoint(mouse.x, mouse.y) - origin;
+						for (int i = 0; i < PolygonPoints.size(); i++)
+						{
+							PolygonPoints[i] = temppoints[i] + delta;
+						}
+						origin = CPoint(mouse.x, mouse.y);
+					}
+				}
+				break;
+			}
+			case WM_LBUTTONDBLCLK:
+			{
+
+				break;
+			}
+			}
+
+			if (pointcount == 0)
+			{
+				delta = CPoint(mouse.x, mouse.y) - origin;
+				for (int i = 0; i < PolygonPoints.size(); i++)
+				{
+					PolygonPoints[i] = temppoints[i] + delta;
+				}
+			}
+
+			refreshScreen();
+		}
+
+	}
 
 }
 
@@ -832,10 +959,24 @@ void CADPolygon::modify()
 
 void CADPolygon::save(ofstream& fout)
 {
-
+	fout << getId() << '\t' << PolygonPoints.size() << '\t';
+	for (int i = 0; i < PolygonPoints.size(); i++)
+	{
+		fout << PolygonPoints[i].x << '\t' << PolygonPoints[i].y << '\t';
+	}
+	fout << endl;
 }
 
 void CADPolygon::open(int pid, ifstream& os)
 {
-
+	int tempnum = 0,tempx=0,tempy=0;
+	id = pid;
+	os >> tempnum;
+	for (int i = 0; i < tempnum; i++)
+	{
+		os >> tempx >> tempy;
+		PolygonPoints.push_back(CPoint(tempx, tempy));
+	}
+	calculateOrigin();
+	draw();
 }
