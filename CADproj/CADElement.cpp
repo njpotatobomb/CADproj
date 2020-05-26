@@ -287,10 +287,10 @@ void CADLine::grab()
 
 }
 
-void CADLine::modify()
-{
-
-}
+//void CADLine::modify()
+//{
+//
+//}
 
 void CADLine::save(ofstream& fout)
 {
@@ -527,10 +527,10 @@ void CADRectangle::grab()
 	}
 }
 
-void CADRectangle::modify()
-{
-
-}
+//void CADRectangle::modify()
+//{
+//
+//}
 
 void CADRectangle::save(ofstream& fout)
 {
@@ -764,10 +764,10 @@ void CADCircle::grab()
 	}
 }
 
-void CADCircle::modify()
-{
-
-}
+//void CADCircle::modify()
+//{
+//
+//}
 
 void CADCircle::save(ofstream& fout)
 {
@@ -1051,10 +1051,10 @@ void CADPolygon::calculateOrigin()
 	origin = CPoint(origin_x,origin_y);
 }
 
-void CADPolygon::modify()
-{
-
-}
+//void CADPolygon::modify()
+//{
+//
+//}
 
 void CADPolygon::save(ofstream& fout)
 {
