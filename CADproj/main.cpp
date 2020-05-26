@@ -255,8 +255,8 @@ int main()
 
 								for(auto& it:objects)
 									tmporigin+=it->getOrigin();
-								tmporigin.x/=objects.size();
-								tmporigin.y/=objects.size();
+								tmporigin.x/=(long)objects.size();
+								tmporigin.y/=(long)objects.size();
 
 								moveMouseTo(tmporigin.x,tmporigin.y);
 								CPoint premouse=tmporigin;
@@ -481,7 +481,7 @@ void init()
 
 	initgraph(SCREENWIDTH,SCREENHEIGHT);
 	HWND hWnd=GetHWnd();
-	SetWindowText(hWnd,L"Crappy CAD");
+	SetWindowText(hWnd,_T("Crappy CAD"));
 
 	int i=0;
 	CPoint coord(0,0);
@@ -510,7 +510,7 @@ void init()
 	LOGFONT font;
 	gettextstyle(&font);
 	font.lfHeight=TEXTHEIGHT;
-	_tcscpy_s(font.lfFaceName,L"Microsoft Yahei UI");	
+	_tcscpy_s(font.lfFaceName,_T("Microsoft Yahei UI"));	
 	font.lfQuality=ANTIALIASED_QUALITY;
 	font.lfWeight=FW_THIN;
 	settextstyle(&font);
@@ -608,7 +608,6 @@ void checkUserInput(TCHAR* s,int nMaxCount,const char* regexp,LPCTSTR pPrompt,LP
 
 	}
 }
-//"(-?[1-9][0-9]*|0),(-?[1-9][0-9]*|0)" for move
 
 
 
