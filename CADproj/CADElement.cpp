@@ -812,10 +812,21 @@ void CADPolygon::init()
 	{
 		int x = 0, y = 0;
 		TCHAR s[63];
+		memset(s, 0, 63 * sizeof(TCHAR));
+
+		InputBox(s, 63, _T("Input coordinate of first point:\nPress \"Yes\" to continue,\"No\" to stop."),
+			_T("CrappyCAD"), _T("For example:\t0,0"), 0, 0, true);
+		checkUserInput(s, 63, "([1-9][0-9]*|0),([1-9][0-9]*|0)", _T("Input coordinate of point:\nInvalid user input!"),
+			_T("CrappyCAD"), _T("For example:\t0,0"));
+		_stscanf_s(s, _T("%d,%d"), &x, &y);
+		CPoint temppoint(x, y + TEXTHEIGHT + 1);
+		PolygonPoints.push_back(temppoint);
 
 		while (InputBox(s, 63, _T("Input coordinate of points in sequence:\nPress \"Yes\" to continue,\"No\" to stop."),
 			_T("CrappyCAD"), _T("For example:\t0,0"), 0, 0, false))
 		{
+			checkUserInput(s, 63, "([1-9][0-9]*|0),([1-9][0-9]*|0)", _T("Input coordinate of point:\nInvalid user input!"),
+				_T("CrappyCAD"), _T("For example:\t0,0"));
 			_stscanf_s(s, _T("%d,%d"), &x, &y);
 			CPoint temppoint(x, y + TEXTHEIGHT + 1);
 			PolygonPoints.push_back(temppoint);
