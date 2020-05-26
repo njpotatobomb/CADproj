@@ -36,10 +36,21 @@ int main()
 	bool refreshedFlag=false;
 	//int fpscounter=0;
 	//clock_t curtime=0,pretime=0;
-	MOUSEMSG mouse;
+	MOUSEMSG mouse=GetMouseMsg();
 	while(1)
 	{
-		mouse=GetMouseMsg();
+		//mouse=GetMouseMsg();
+
+		if(MouseHit())
+		{
+			do
+			{
+				mouse=GetMouseMsg();
+			} while(mouse.uMsg==WM_MOUSEMOVE&&MouseHit());
+		} else
+		{
+			continue;
+		}
 
 		for(auto& it:buttons)
 			it->setMouseOnFlag(it->isWithinRegion(mouse.x,mouse.y));
@@ -253,10 +264,21 @@ int main()
 								
 								bool lbuttondownflag=false;
 								int pointcount=0;
-								MOUSEMSG mouse;
+								MOUSEMSG mouse=GetMouseMsg();
 								while(pointcount<1)
 								{
-									mouse=GetMouseMsg();
+									//mouse=GetMouseMsg();
+
+									if(MouseHit())
+									{
+										do
+										{
+											mouse=GetMouseMsg();
+										} while(mouse.uMsg==WM_MOUSEMOVE&&MouseHit());
+									} else
+									{
+										continue;
+									}
 
 									switch(mouse.uMsg)
 									{

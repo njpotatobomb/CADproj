@@ -118,10 +118,21 @@ void CADLine::init()
 
 		bool lbuttondownflag=false;
 		int pointcount=0;
-		MOUSEMSG mouse;
+		MOUSEMSG mouse=GetMouseMsg();
 		while(pointcount<2)
 		{
-			mouse=GetMouseMsg();
+			//mouse=GetMouseMsg();
+
+			if(MouseHit())
+			{
+				do
+				{
+					mouse=GetMouseMsg();
+				} while(mouse.uMsg==WM_MOUSEMOVE&&MouseHit());
+			} else
+			{
+				continue;
+			}
 
 			switch(mouse.uMsg)
 			{
@@ -214,10 +225,21 @@ void CADLine::grab()
 
 		bool lbuttondownflag=false;
 		int pointcount=0;
-		MOUSEMSG mouse;
+		MOUSEMSG mouse=GetMouseMsg();
 		while(pointcount<1)
 		{
-			mouse=GetMouseMsg();
+			//mouse=GetMouseMsg();
+
+			if(MouseHit())
+			{
+				do
+				{
+					mouse=GetMouseMsg();
+				} while(mouse.uMsg==WM_MOUSEMOVE&&MouseHit());
+			} else
+			{
+				continue;
+			}
 
 			switch(mouse.uMsg)
 			{
@@ -337,10 +359,21 @@ void CADRectangle::init()
 
 		bool Ibuttondownflag=false;
 		int pointcount=0;
-		MOUSEMSG mouse;
+		MOUSEMSG mouse=GetMouseMsg();
 		while(pointcount<2)
 		{
-			mouse=GetMouseMsg();
+			//mouse=GetMouseMsg();
+
+			if(MouseHit())
+			{
+				do
+				{
+					mouse=GetMouseMsg();
+				} while(mouse.uMsg==WM_MOUSEMOVE&&MouseHit());
+			} else
+			{
+				continue;
+			}
 
 			switch(mouse.uMsg)
 			{
@@ -433,10 +466,21 @@ void CADRectangle::grab()
 
 		bool lbuttondownflag=false;
 		int pointcount=0;
-		MOUSEMSG mouse;
+		MOUSEMSG mouse=GetMouseMsg();
 		while(pointcount<1)
 		{
-			mouse=GetMouseMsg();
+			//mouse=GetMouseMsg();
+
+			if(MouseHit())
+			{
+				do
+				{
+					mouse=GetMouseMsg();
+				} while(mouse.uMsg==WM_MOUSEMOVE&&MouseHit());
+			} else
+			{
+				continue;
+			}
 
 			switch(mouse.uMsg)
 			{
@@ -556,10 +600,21 @@ void CADCircle::init()
 		
 		bool Ibuttondownflag=false;
 		int pointcount=0;
-		MOUSEMSG mouse;
+		MOUSEMSG mouse=GetMouseMsg();
 		while(pointcount<2)
 		{
-			mouse=GetMouseMsg();
+			//mouse=GetMouseMsg();
+
+			if(MouseHit())
+			{
+				do
+				{
+					mouse=GetMouseMsg();
+				} while(mouse.uMsg==WM_MOUSEMOVE&&MouseHit());
+			} else
+			{
+				continue;
+			}
 
 			switch(mouse.uMsg)
 			{
@@ -650,10 +705,21 @@ void CADCircle::grab()
 
 		bool lbuttondownflag=false;
 		int pointcount=0;
-		MOUSEMSG mouse;
+		MOUSEMSG mouse=GetMouseMsg();
 		while(pointcount<1)
 		{
-			mouse=GetMouseMsg();
+			//mouse=GetMouseMsg();
+
+			if(MouseHit())
+			{
+				do
+				{
+					mouse=GetMouseMsg();
+				} while(mouse.uMsg==WM_MOUSEMOVE&&MouseHit());
+			} else
+			{
+				continue;
+			}
 
 			switch(mouse.uMsg)
 			{
@@ -765,10 +831,21 @@ void CADPolygon::init()
 			bool Rbuttondownflag = false;
 			bool endflag = false;
 			int pointcount = 0;
-			MOUSEMSG mouse;
+			MOUSEMSG mouse=GetMouseMsg();
 			while (!endflag)
 			{
-				mouse = GetMouseMsg();
+				//mouse = GetMouseMsg();
+
+				if(MouseHit())
+				{
+					do
+					{
+						mouse=GetMouseMsg();
+					} while(mouse.uMsg==WM_MOUSEMOVE&&MouseHit());
+				} else
+				{
+					continue;
+				}
 
 				switch (mouse.uMsg)
 				{
@@ -884,10 +961,21 @@ void CADPolygon::grab()
 
 		bool lbuttondownflag = false;
 		int pointcount = 0;
-		MOUSEMSG mouse;
+		MOUSEMSG mouse=GetMouseMsg();
 		while (pointcount < 1)
 		{
-			mouse = GetMouseMsg();
+			//mouse = GetMouseMsg();
+
+			if(MouseHit())
+			{
+				do
+				{
+					mouse=GetMouseMsg();
+				}while(mouse.uMsg==WM_MOUSEMOVE&&MouseHit());
+			}else
+			{
+				continue;
+			}
 
 			switch (mouse.uMsg)
 			{
