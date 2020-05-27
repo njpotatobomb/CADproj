@@ -133,6 +133,14 @@ int main()
 							if(InputBox(nullptr,63,_T("Do you really want to exit?\nPress \"Yes\" to continue,\"No\" to cancel."),
 								_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
 							{
+								if (!objects.empty())
+								{
+									if (InputBox(nullptr, 63, _T("You have objects on canvas\nDo you want to save them?\nPress \"Yes\" to save,\"No\" to exit."),
+										_T("CrappyCAD"), _T("Do not input here,I kown it is ugly"), 0, 0, false))
+									{
+										save();
+									}
+								}
 								for(auto& it:objects)
 									delete it;
 								objects.clear();
