@@ -117,12 +117,13 @@ int main()
 						}
 						case 02:
 						{
-							//help&about
+							//about
 
 							InputBox(nullptr,63,_T(
-								"Do you really want to read?\n"
-								"helphelphelphelphelphelphelphelp\n"
-								"aboutaboutaboutaboutaboutabout"
+								"CrappyCAD project\n"
+								"Author:SadCloud55&&njpotatobomb\n"
+								"May 13~26,2020\n"
+								"View sorce code at https://github.com/njpotatobomb/CADproj"
 							));
 
 							break;
@@ -222,13 +223,13 @@ int main()
 							outline.push_back(pNewButton);
 							break;
 						}
+						//case 14:
+						//{
+						//	//modify
+						// not implemented due to time issue
+						//	break;
+						//}
 						case 14:
-						{
-							//modify
-
-							break;
-						}
-						case 15:
 						{
 							//move
 
@@ -240,7 +241,7 @@ int main()
 
 							break;
 						}
-						case 16:
+						case 15:
 						{
 							//move all
 
@@ -333,7 +334,7 @@ int main()
 
 							break;
 						}
-						case 17:
+						case 16:
 						{
 							//delete
 
@@ -383,7 +384,7 @@ int main()
 
 							break;
 						}
-						case 18:
+						case 17:
 						{
 							//delete all
 
