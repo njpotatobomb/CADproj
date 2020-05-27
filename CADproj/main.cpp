@@ -492,6 +492,7 @@ void init()
 	HWND hWnd=GetHWnd();
 	SetWindowText(hWnd,_T("Crappy CAD"));
 
+
 	int i=0;
 	CPoint coord(0,0);
 	Button* pNewButton;
@@ -523,6 +524,31 @@ void init()
 	font.lfQuality=ANTIALIASED_QUALITY;
 	font.lfWeight=FW_THIN;
 	settextstyle(&font);
+
+	int xdegreenum = 0;
+	int ydegreenum = 0;
+	TCHAR xdegree[4];
+	TCHAR ydegree[4];
+	for (int i = 0; i < CANVASWIDTH; i += DEGREE)
+	{
+		line(i, TEXTHEIGHT, i, TEXTHEIGHT + DEGREELINE);
+		if ((i / DEGREE) % 5 == 0)
+		{
+			xdegreenum = i / DEGREE;
+			_stprintf_s(xdegree, _T("% d"), xdegreenum);
+			outtextxy(i, TEXTHEIGHT + DEGREELINE, xdegree);
+		}
+	}
+	for (int i = 0; i < CANVASHEIGHT; i += DEGREE)
+	{
+		line(0, TEXTHEIGHT + i, DEGREELINE, TEXTHEIGHT + i);
+		if ((i / DEGREE) % 5 == 0 && i != 0)
+		{
+			ydegreenum = i / DEGREE;
+			_stprintf_s(ydegree, _T("% d"), ydegreenum);
+			outtextxy(DEGREELINE, TEXTHEIGHT + i, ydegree);
+		}
+	}
 }
 
 
@@ -564,6 +590,31 @@ void refreshScreen()
 	//static TCHAR s[15];
 	//_stprintf_s(s,15,_T("%03dfps"),fps);
 	//outtextxy(SCREENWIDTH-60,SCREENHEIGHT-TEXTHEIGHT,s);
+
+	int xdegreenum = 0;
+	int ydegreenum = 0;
+	TCHAR xdegree[4];
+	TCHAR ydegree[4];
+	for (int i = 0; i < CANVASWIDTH; i += DEGREE)
+	{
+		line(i, TEXTHEIGHT, i, TEXTHEIGHT + DEGREELINE);
+		if ((i / DEGREE) % 5 == 0)
+		{
+			xdegreenum = i / DEGREE;
+			_stprintf_s(xdegree,_T( "% d"), xdegreenum);
+			outtextxy(i, TEXTHEIGHT + DEGREELINE, xdegree);
+		}
+	}
+	for (int i = 0; i < CANVASHEIGHT; i += DEGREE)
+	{
+		line(0, TEXTHEIGHT + i, DEGREELINE, TEXTHEIGHT + i);
+		if ((i / DEGREE) % 5 == 0&&i!=0)
+		{
+			ydegreenum = i / DEGREE;
+			_stprintf_s(ydegree, _T("% d"), ydegreenum);
+			outtextxy(DEGREELINE, TEXTHEIGHT + i, ydegree);
+		}
+	}
 
 	FlushBatchDraw();
 	EndBatchDraw();
