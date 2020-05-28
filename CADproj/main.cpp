@@ -29,6 +29,7 @@ Button* selectedOutline=nullptr;
 int main()
 {
 	init();
+	BeginBatchDraw();
 	refreshScreen();
 
 
@@ -154,6 +155,7 @@ int main()
 									delete it;
 								outline.clear();
 
+								EndBatchDraw();
 								closegraph();
 								return 0;
 							}
@@ -473,7 +475,8 @@ int main()
 		//}
 	}
 	
-	return 0;
+	//opps
+	return 514;
 }
 
 
@@ -525,30 +528,6 @@ void init()
 	font.lfWeight=FW_THIN;
 	settextstyle(&font);
 
-	int xdegreenum = 0;
-	int ydegreenum = 0;
-	TCHAR xdegree[4];
-	TCHAR ydegree[4];
-	for (int i = 0; i < CANVASWIDTH; i += DEGREE)
-	{
-		line(i, TEXTHEIGHT, i, TEXTHEIGHT + DEGREELINE);
-		if ((i / DEGREE) % 5 == 0)
-		{
-			xdegreenum = i / DEGREE;
-			_stprintf_s(xdegree, _T("% d"), xdegreenum);
-			outtextxy(i, TEXTHEIGHT + DEGREELINE, xdegree);
-		}
-	}
-	for (int i = 0; i < CANVASHEIGHT; i += DEGREE)
-	{
-		line(0, TEXTHEIGHT + i, DEGREELINE, TEXTHEIGHT + i);
-		if ((i / DEGREE) % 5 == 0 && i != 0)
-		{
-			ydegreenum = i / DEGREE;
-			_stprintf_s(ydegree, _T("% d"), ydegreenum);
-			outtextxy(DEGREELINE, TEXTHEIGHT + i, ydegree);
-		}
-	}
 }
 
 
@@ -562,7 +541,6 @@ void init()
 void refreshScreen()
 {
 	cleardevice();
-	BeginBatchDraw();
 
 	//draw cad elements
 	for(auto& it:objects)
@@ -617,7 +595,6 @@ void refreshScreen()
 	}
 
 	FlushBatchDraw();
-	EndBatchDraw();
 }
 
 
