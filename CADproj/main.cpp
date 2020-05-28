@@ -676,103 +676,118 @@ void save()
   */
 void open()
 {
-	ifstream fin;
-	fin.open("CADProject.txt");
-	int tempid;
-	while (!fin.eof()&&!fin.fail())
+	if (InputBox(nullptr, 63, _T("You choose to open a series of saved objects,but it will delete the objects on present canvas.\nPress \"Yes\" to continue,\"No\" to quit."),
+		_T("CrappyCAD"), _T("Do not input here,I kown it is ugly"), 0, 0, false))
 	{
-		bool test = true;
-		fin >> tempid;
-		switch (tempid / 1000)
+		for (auto& it : objects)
+			delete it;
+		objects.clear();
+
+		for (auto& it : outline)
+			delete it;
+		outline.clear();
+
+		selectedOutline = nullptr;
+		selectedObject = nullptr;
+
+		ifstream fin;
+		fin.open("CADProject.txt");
+		int tempid;
+		while (!fin.eof() && !fin.fail())
 		{
-		case 1://open a Line
-		{
-			for (int i = 0; i < objects.size(); i++)
+			bool test = true;
+			fin >> tempid;
+			switch (tempid / 1000)
 			{
-				if (objects[i]->getId() == tempid)   test = false;
-			}
-			if (test)
+			case 1://open a Line
 			{
-				CADLine* pnewline = new CADLine();
-				pnewline->open(tempid, fin);
-				objects.push_back(pnewline);
+				for (int i = 0; i < objects.size(); i++)
+				{
+					if (objects[i]->getId() == tempid)   test = false;
+				}
+				if (test)
+				{
+					CADLine* pnewline = new CADLine();
+					pnewline->open(tempid, fin);
+					objects.push_back(pnewline);
 
-				CPoint coord = outline.empty() ? CPoint(CANVASWIDTH + 1, TEXTHEIGHT + 1) : outline.back()->getBottomLeft();
-				TCHAR s[63];
-				_stprintf_s(s, _T("Line%d"), pnewline->getId());
-				Button* pNewButton = new Button(pnewline->getId(), coord.x, coord.y, s);
-				outline.push_back(pNewButton);
+					CPoint coord = outline.empty() ? CPoint(CANVASWIDTH + 1, TEXTHEIGHT + 1) : outline.back()->getBottomLeft();
+					TCHAR s[63];
+					_stprintf_s(s, _T("Line%d"), pnewline->getId());
+					Button* pNewButton = new Button(pnewline->getId(), coord.x, coord.y, s);
+					outline.push_back(pNewButton);
+				}
+				break;
 			}
-			break;
-		}
-		case 2://open a Rectangle
-		{
-			for (int i = 0; i < objects.size(); i++)
+			case 2://open a Rectangle
 			{
-				if (objects[i]->getId() == tempid)   test = false;
+				for (int i = 0; i < objects.size(); i++)
+				{
+					if (objects[i]->getId() == tempid)   test = false;
+				}
+				if (test)
+				{
+					CADRectangle* pnewrectangle = new CADRectangle();
+					pnewrectangle->open(tempid, fin);
+					objects.push_back(pnewrectangle);
+
+					CPoint coord = outline.empty() ? CPoint(CANVASWIDTH + 1, TEXTHEIGHT + 1) : outline.back()->getBottomLeft();
+					TCHAR s[63];
+					_stprintf_s(s, _T("Rectangle%d"), pnewrectangle->getId());
+					Button* pNewButton = new Button(pnewrectangle->getId(), coord.x, coord.y, s);
+					outline.push_back(pNewButton);
+				}
+				break;
 			}
-			if (test)
+			case 3://open a Circle
 			{
-				CADRectangle* pnewrectangle = new CADRectangle();
-				pnewrectangle->open(tempid, fin);
-				objects.push_back(pnewrectangle);
+				for (int i = 0; i < objects.size(); i++)
+				{
+					if (objects[i]->getId() == tempid)   test = false;
+				}
+				if (test)
+				{
+					CADCircle* pnewcircle = new CADCircle();
+					pnewcircle->open(tempid, fin);
+					objects.push_back(pnewcircle);
 
-				CPoint coord = outline.empty() ? CPoint(CANVASWIDTH + 1, TEXTHEIGHT + 1) : outline.back()->getBottomLeft();
-				TCHAR s[63];
-				_stprintf_s(s, _T("Rectangle%d"), pnewrectangle->getId());
-				Button* pNewButton = new Button(pnewrectangle->getId(), coord.x, coord.y, s);
-				outline.push_back(pNewButton);
+					CPoint coord = outline.empty() ? CPoint(CANVASWIDTH + 1, TEXTHEIGHT + 1) : outline.back()->getBottomLeft();
+					TCHAR s[63];
+					_stprintf_s(s, _T("Circle%d"), pnewcircle->getId());
+					Button* pNewButton = new Button(pnewcircle->getId(), coord.x, coord.y, s);
+					outline.push_back(pNewButton);
+				}
+				break;
 			}
-			break;
-		}
-		case 3://open a Circle
-		{
-			for (int i = 0; i < objects.size(); i++)
+			case 4://open a Polygon
 			{
-				if (objects[i]->getId() == tempid)   test = false;
+				for (int i = 0; i < objects.size(); i++)
+				{
+					if (objects[i]->getId() == tempid)   test = false;
+				}
+				if (test)
+				{
+					CADPolygon* pnewpolygon = new CADPolygon();
+					pnewpolygon->open(tempid, fin);
+					objects.push_back(pnewpolygon);
+
+					CPoint coord = outline.empty() ? CPoint(CANVASWIDTH + 1, TEXTHEIGHT + 1) : outline.back()->getBottomLeft();
+					TCHAR s[63];
+					_stprintf_s(s, _T("Polygon%d"), pnewpolygon->getId());
+					Button* pNewButton = new Button(pnewpolygon->getId(), coord.x, coord.y, s);
+					outline.push_back(pNewButton);
+				}
+				break;
+
 			}
-			if (test)
+			default://opps
 			{
-				CADCircle* pnewcircle = new CADCircle();
-				pnewcircle->open(tempid, fin);
-				objects.push_back(pnewcircle);
 
-				CPoint coord = outline.empty() ? CPoint(CANVASWIDTH + 1, TEXTHEIGHT + 1) : outline.back()->getBottomLeft();
-				TCHAR s[63];
-				_stprintf_s(s, _T("Circle%d"), pnewcircle->getId());
-				Button* pNewButton = new Button(pnewcircle->getId(), coord.x, coord.y, s);
-				outline.push_back(pNewButton);
+				break;
+
 			}
-			break;
-		}
-		case 4://open a Polygon
-		{
-			for (int i = 0; i < objects.size(); i++)
-			{
-				if (objects[i]->getId() == tempid)   test = false;
+
 			}
-			if (test)
-			{
-				CADPolygon* pnewpolygon = new CADPolygon();
-				pnewpolygon->open(tempid, fin);
-				objects.push_back(pnewpolygon);
-
-				CPoint coord = outline.empty() ? CPoint(CANVASWIDTH + 1, TEXTHEIGHT + 1) : outline.back()->getBottomLeft();
-				TCHAR s[63];
-				_stprintf_s(s, _T("Polygon%d"), pnewpolygon->getId());
-				Button* pNewButton = new Button(pnewpolygon->getId(), coord.x, coord.y, s);
-				outline.push_back(pNewButton);
-			}
-			break;
-
-		}
-		default://opps
-		{
-
-			break;
-
-		}
-
 		}
 	}
 }
