@@ -807,7 +807,7 @@ CADPolygon::~CADPolygon()
 
 void CADPolygon::init()
 {
-	if (InputBox(nullptr, 63, _T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse.\nIf you draw with mouse,use left button to draw points in sequence,and right button to draw the last point."),
+	if (InputBox(nullptr, 63, _T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
 		_T("CrappyCAD"), _T("Do not input here,I kown it is ugly"), 0, 0, false))
 	{
 		int x = 0, y = 0;
@@ -835,6 +835,8 @@ void CADPolygon::init()
 	}
 	else
 	{
+		InputBox(nullptr, 63, _T("Draw with mouse,use left button to draw points in sequence,\nand right button to draw the last point."),
+			_T("CrappyCAD"), _T("Do not input here,I kown it is ugly"), 0, 0, true);
 
 			moveMouseTo(SCREENWIDTH / 2, SCREENHEIGHT / 2);
 
