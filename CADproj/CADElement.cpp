@@ -840,6 +840,7 @@ void CADPolygon::init()
 
 			bool lbuttondownflag = false;
 			bool Rbuttondownflag = false;
+			bool NoClickFlag = true;
 			bool endflag = false;
 			int pointcount = 0;
 			MOUSEMSG mouse=GetMouseMsg();
@@ -870,7 +871,11 @@ void CADPolygon::init()
 					if (lbuttondownflag)
 					{
 						lbuttondownflag = false;
-
+						if (!NoClickFlag)
+						{
+							PolygonPoints.pop_back();
+							NoClickFlag = true;
+						}
 						pointcount++;
 						CPoint temppoint(mouse.x, mouse.y);
 						PolygonPoints.push_back(temppoint);
@@ -889,9 +894,23 @@ void CADPolygon::init()
 				}
 				case WM_RBUTTONUP:
 				{
+					if (!NoClickFlag)
+					{
+						PolygonPoints.pop_back();
+						NoClickFlag = true;
+					}
 					PolygonPoints.push_back(CPoint(mouse.x, mouse.y));
 					endflag=true;
 					break;
+				}
+				default:
+				{
+					if (!NoClickFlag)
+					{
+						PolygonPoints.pop_back();
+					}
+					PolygonPoints.push_back(CPoint(mouse.x, mouse.y));
+					NoClickFlag = false;
 				}
 				}
 
@@ -915,24 +934,27 @@ void CADPolygon::draw()
 	if(selectedFlag)
 		setlinecolor(LIGHTBLUE);
 
-		//CPoint *PolygonPointsArr=new CPoint[PolygonPoints.size()];
-		//for (int i = 0; i < PolygonPoints.size(); i++)
-		//{
-		//	PolygonPointsArr[i].x = PolygonPoints[i].x;
-		//	PolygonPointsArr[i].y = PolygonPoints[i].y;
-		//}
-		//polygon(PolygonPointsArr,PolygonPoints.size());
-	if (!PolygonPoints.empty())
+	CPoint *PolygonPointsArr=new CPoint[PolygonPoints.size()];
+	for (int i = 0; i < PolygonPoints.size(); i++)
 	{
-		for (int i = 0; i < PolygonPoints.size() - 1; i++)
-		{
-			line(PolygonPoints[i].x, PolygonPoints[i].y,
-				PolygonPoints[i + 1].x, PolygonPoints[i + 1].y);
-		}
-
-		line(PolygonPoints[PolygonPoints.size() - 1].x, PolygonPoints[PolygonPoints.size() - 1].y,
-			PolygonPoints[0].x, PolygonPoints[0].y);
+		PolygonPointsArr[i].x = PolygonPoints[i].x;
+		PolygonPointsArr[i].y = PolygonPoints[i].y;
 	}
+	polygon(PolygonPointsArr,PolygonPoints.size());
+
+    //======Create a polygon with line,not elegant.
+	//if (!PolygonPoints.empty())
+	//{
+	//	for (int i = 0; i < PolygonPoints.size() - 1; i++)
+	//	{
+	//		line(PolygonPoints[i].x, PolygonPoints[i].y,
+	//			PolygonPoints[i + 1].x, PolygonPoints[i + 1].y);
+	//	}
+
+	//	line(PolygonPoints[PolygonPoints.size() - 1].x, PolygonPoints[PolygonPoints.size() - 1].y,
+	//		PolygonPoints[0].x, PolygonPoints[0].y);
+	//}
+
 	setlinecolor(linecolor);
 
 }
