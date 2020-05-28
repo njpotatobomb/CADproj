@@ -663,7 +663,7 @@ void save()
 		objects[i]->save(fout);
 	}
 	fout.close();
-	InputBox(NULL, 55, _T("Saved!"), NULL);
+	InputBox(NULL, 55, _T("Saved into \"CADProject.txt\""), NULL);
 }
 
 
