@@ -95,22 +95,22 @@ void CADLine::init()
 	if(InputBox(nullptr,63,_T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
 		_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
 	{
-		int x=0,y=0;
+		double x=0,y=0;
 		TCHAR s[63];
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input coordinate of starting point:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
-		checkUserInput(s,63,"([1-9][0-9]*|0),([1-9][0-9]*|0)",_T("Input coordinate of starting point:\nInvalid user input!"),
+		checkUserInput(s,63,R"spl((([1-9]\d*|0)(\.\d*[1-9])?),(([1-9]\d*|0)(\.\d*[1-9])?))spl",_T("Input coordinate of starting point:\nInvalid user input!"),
 			_T("CrappyCAD"),_T("For example:\t0,0"));
-		_stscanf_s(s,_T("%d,%d"),&x,&y);
-		start=CPoint(x*DEGREE,y*DEGREE+TEXTHEIGHT+1);
+		_stscanf_s(s,_T("%lf,%lf"),&x,&y);
+		start=CPoint(int(x*DEGREE),int(y*DEGREE)+TEXTHEIGHT+1);
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input coordinate of ending point:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
-		checkUserInput(s,63,"([1-9][0-9]*|0),([1-9][0-9]*|0)",_T("Input coordinate of ending point:\nInvalid user input!"),
+		checkUserInput(s,63,R"spl((([1-9]\d*|0)(\.\d*[1-9])?),(([1-9]\d*|0)(\.\d*[1-9])?))spl",_T("Input coordinate of ending point:\nInvalid user input!"),
 			_T("CrappyCAD"),_T("For example:\t0,0"));
-		_stscanf_s(s,_T("%d,%d"),&x,&y);
-		end=CPoint(x*DEGREE,y*DEGREE+TEXTHEIGHT+1);
+		_stscanf_s(s,_T("%lf,%lf"),&x,&y);
+		end=CPoint(int(x*DEGREE),int(y*DEGREE)+TEXTHEIGHT+1);
 
 	}else
 	{
@@ -205,15 +205,15 @@ void CADLine::grab()
 	if(InputBox(nullptr,63,_T("Do you want to manually input offset data?\nPress \"Yes\" to continue,\"No\" to drag with mouse."),
 		_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
 	{
-		int x=0,y=0;
+		double x=0,y=0;
 		TCHAR s[63];
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input offset on x and y axis:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
-		checkUserInput(s,63,"(-?[1-9][0-9]*|0),(-?[1-9][0-9]*|0)",_T("Input offset on x and y axis:\nInvalid user input!"),
-			_T("CrappyCAD"),_T("For example:\t0,0"));
-		_stscanf_s(s,_T("%d,%d"),&x,&y);
-		move(x * DEGREE, y * DEGREE);
+		checkUserInput(s,63,R"spl(((-?[1-9]\d*|0)(\.\d*[1-9])?|-0\.\d*[1-9]),((-?[1-9]\d*|0)(\.\d*[1-9])?|-0\.\d*[1-9]))spl",
+			_T("Input offset on x and y axis:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t0,0"));
+		_stscanf_s(s,_T("%lf,%lf"),&x,&y);
+		move(int(x*DEGREE), int(y*DEGREE));
 
 	} else
 	{
@@ -336,22 +336,22 @@ void CADRectangle::init()
 	if(InputBox(nullptr,63,_T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
 		_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
 	{
-		int x=0,y=0;
+		double x=0,y=0;
 		TCHAR s[63];
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input coordinate of topleft corner:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
-		checkUserInput(s,63,"([1-9][0-9]*|0),([1-9][0-9]*|0)",_T("Input coordinate of starting point:\nInvalid user input!"),
+		checkUserInput(s,63,R"spl((([1-9]\d*|0)(\.\d*[1-9])?),(([1-9]\d*|0)(\.\d*[1-9])?))spl",_T("Input coordinate of topleft corner:\nInvalid user input!"),
 			_T("CrappyCAD"),_T("For example:\t0,0"));
-		_stscanf_s(s,_T("%d,%d"),&x,&y);
-		start=CPoint(x*DEGREE,y*DEGREE+TEXTHEIGHT+1);
+		_stscanf_s(s,_T("%lf,%lf"),&x,&y);
+		start=CPoint(int(x*DEGREE),int(y*DEGREE)+TEXTHEIGHT+1);
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input width and height:"),_T("CrappyCAD"),_T("For example:\t200,100"),0,0,true);
-		checkUserInput(s,63,"([1-9][0-9]*|0),([1-9][0-9]*|0)",_T("Input width and height:\nInvalid user input!"),
-			_T("CrappyCAD"),_T("For example:\t200,100"));
-		_stscanf_s(s,_T("%d,%d"),&x,&y);
-		end=CPoint(start.x+x*DEGREE,start.y+y*DEGREE);
+		checkUserInput(s,63,R"spl((([1-9]\d*|0)(\.\d*[1-9])?),(([1-9]\d*|0)(\.\d*[1-9])?))spl",_T("Input width and height:\nInvalid user input!"),
+			_T("CrappyCAD"),_T("For example:\t20,10"));
+		_stscanf_s(s,_T("%lf,%lf"),&x,&y);
+		end=CPoint(start.x+int(x*DEGREE),start.y+int(y*DEGREE));
 
 	} else
 	{
@@ -446,15 +446,15 @@ void CADRectangle::grab()
 	if(InputBox(nullptr,63,_T("Do you want to manually input offset data?\nPress \"Yes\" to continue,\"No\" to drag with mouse."),
 		_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
 	{
-		int x=0,y=0;
+		double x=0,y=0;
 		TCHAR s[63];
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input offset on x and y axis:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
-		checkUserInput(s,63,"(-?[1-9][0-9]*|0),(-?[1-9][0-9]*|0)",_T("Input offset on x and y axis:\nInvalid user input!"),
-			_T("CrappyCAD"),_T("For example:\t0,0"));
-		_stscanf_s(s,_T("%d,%d"),&x,&y);
-		move(x * DEGREE, y * DEGREE);
+		checkUserInput(s,63,R"spl(((-?[1-9]\d*|0)(\.\d*[1-9])?|-0\.\d*[1-9]),((-?[1-9]\d*|0)(\.\d*[1-9])?|-0\.\d*[1-9]))spl",
+			_T("Input offset on x and y axis:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t0,0"));
+		_stscanf_s(s,_T("%lf,%lf"),&x,&y);
+		move(int(x*DEGREE), int(y*DEGREE));
 
 	} else
 	{
@@ -577,22 +577,22 @@ void CADCircle::init()
 	if(InputBox(nullptr,63,_T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
 		_T("CrappyCAD"),_T("Do not input here,I know it is ugly"),0,0,false))
 	{
-		int x=0,y=0;
+		double x=0,y=0;
 		TCHAR s[63];
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input coordinate of center:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
-		checkUserInput(s,63,"([1-9][0-9]*|0),([1-9][0-9]*|0)",_T("Input coordinate of center:\nInvalid user input!"),
+		checkUserInput(s,63,R"spl((([1-9]\d*|0)(\.\d*[1-9])?),(([1-9]\d*|0)(\.\d*[1-9])?))spl",_T("Input coordinate of center:\nInvalid user input!"),
 			_T("CrappyCAD"),_T("For example:\t0,0"));
-		_stscanf_s(s,_T("%d,%d"),&x,&y);
-		center=CPoint(x*DEGREE,y*DEGREE+TEXTHEIGHT+1);
+		_stscanf_s(s,_T("%lf,%lf"),&x,&y);
+		center=CPoint(int(x*DEGREE),int(y*DEGREE)+TEXTHEIGHT+1);
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input radius:"),_T("CrappyCAD"),_T("For example:\t100"),0,0,true);
-		checkUserInput(s,63,"[1-9][0-9]*|0",_T("Input radius:\nInvalid user input!"),
+		checkUserInput(s,63,R"spl((([1-9]\d*|0)(\.\d*[1-9])?))spl",_T("Input radius:\nInvalid user input!"),
 			_T("CrappyCAD"),_T("For example:\t100"));
-		_stscanf_s(s,_T("%d"),&x);
-		radius=x*DEGREE;
+		_stscanf_s(s,_T("%lf"),&x);
+		radius=int(x*DEGREE);
 
 	} else
 	{
@@ -686,15 +686,15 @@ void CADCircle::grab()
 	if(InputBox(nullptr,63,_T("Do you want to manually input offset data?\nPress \"Yes\" to continue,\"No\" to drag with mouse."),
 		_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
 	{
-		int x=0,y=0;
+		double x=0,y=0;
 		TCHAR s[63];
 
 		memset(s,0,63*sizeof(TCHAR));
 		InputBox(s,63,_T("Input offset on x and y axis:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,true);
-		checkUserInput(s,63,"(-?[1-9][0-9]*|0),(-?[1-9][0-9]*|0)",_T("Input offset on x and y axis:\nInvalid user input!"),
-			_T("CrappyCAD"),_T("For example:\t0,0"));
-		_stscanf_s(s,_T("%d,%d"),&x,&y);
-		move(x * DEGREE, y * DEGREE);
+		checkUserInput(s,63,R"spl(((-?[1-9]\d*|0)(\.\d*[1-9])?|-0\.\d*[1-9]),((-?[1-9]\d*|0)(\.\d*[1-9])?|-0\.\d*[1-9]))spl",
+			_T("Input offset on x and y axis:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t0,0"));
+		_stscanf_s(s,_T("%lf,%lf"),&x,&y);
+		move(int(x*DEGREE), int(y*DEGREE));
 
 	} else
 	{
@@ -810,25 +810,25 @@ void CADPolygon::init()
 	if (InputBox(nullptr, 63, _T("Do you want to manually input object data?\nPress \"Yes\" to continue,\"No\" to draw with mouse."),
 		_T("CrappyCAD"), _T("Do not input here,I kown it is ugly"), 0, 0, false))
 	{
-		int x = 0, y = 0;
+		double x=0,y=0;
 		TCHAR s[63];
 		memset(s, 0, 63 * sizeof(TCHAR));
 
 		InputBox(s, 63, _T("Input coordinate of first point:\nPress \"Yes\" to continue,\"No\" to stop."),
 			_T("CrappyCAD"), _T("For example:\t0,0"), 0, 0, true);
-		checkUserInput(s, 63, "([1-9][0-9]*|0),([1-9][0-9]*|0)", _T("Input coordinate of point:\nInvalid user input!"),
+		checkUserInput(s, 63, R"spl((([1-9]\d*|0)(\.\d*[1-9])?),(([1-9]\d*|0)(\.\d*[1-9])?))spl", _T("Input coordinate of point:\nInvalid user input!"),
 			_T("CrappyCAD"), _T("For example:\t0,0"));
-		_stscanf_s(s, _T("%d,%d"), &x, &y);
-		CPoint temppoint(x*DEGREE, y*DEGREE + TEXTHEIGHT + 1);
+		_stscanf_s(s, _T("%lf,%lf"), &x, &y);
+		CPoint temppoint(int(x*DEGREE), int(y*DEGREE) + TEXTHEIGHT + 1);
 		PolygonPoints.push_back(temppoint);
 
 		while (InputBox(s, 63, _T("Input coordinate of points in sequence:\nPress \"Yes\" to continue,\"No\" to stop."),
 			_T("CrappyCAD"), _T("For example:\t0,0"), 0, 0, false))
 		{
-			checkUserInput(s, 63, "([1-9][0-9]*|0),([1-9][0-9]*|0)", _T("Input coordinate of point:\nInvalid user input!"),
+			checkUserInput(s, 63, R"spl((([1-9]\d*|0)(\.\d*[1-9])?),(([1-9]\d*|0)(\.\d*[1-9])?))spl", _T("Input coordinate of point:\nInvalid user input!"),
 				_T("CrappyCAD"), _T("For example:\t0,0"));
-			_stscanf_s(s, _T("%d,%d"), &x, &y);
-			CPoint temppoint(x*DEGREE, y*DEGREE + TEXTHEIGHT + 1);
+			_stscanf_s(s, _T("%lf,%lf"), &x, &y);
+			CPoint temppoint(int(x*DEGREE), int(y*DEGREE) + TEXTHEIGHT + 1);
 			PolygonPoints.push_back(temppoint);
         }
 
@@ -942,7 +942,7 @@ void CADPolygon::draw()
 		PolygonPointsArr[i].x = PolygonPoints[i].x;
 		PolygonPointsArr[i].y = PolygonPoints[i].y;
 	}
-	polygon(PolygonPointsArr,PolygonPoints.size());
+	polygon(PolygonPointsArr,(int)PolygonPoints.size());
 
     //======Create a polygon with line,not elegant.
 	//if (!PolygonPoints.empty())
@@ -976,15 +976,15 @@ void CADPolygon::grab()
 	if (InputBox(nullptr, 63, _T("Do you want to manually input offset data?\nPress \"Yes\" to continue,\"No\" to drag with mouse."),
 		_T("CrappyCAD"), _T("Do not input here,I kown it is ugly"), 0, 0, false))
 	{
-		int x = 0, y = 0;
+		double x=0,y=0;
 		TCHAR s[63];
 
 		memset(s, 0, 63 * sizeof(TCHAR));
 		InputBox(s, 63, _T("Input offset on x and y axis:"), _T("CrappyCAD"), _T("For example:\t0,0"), 0, 0, true);
-		checkUserInput(s, 63, "(-?[1-9][0-9]*|0),(-?[1-9][0-9]*|0)", _T("Input offset on x and y axis:\nInvalid user input!"),
-			_T("CrappyCAD"), _T("For example:\t0,0"));
-		_stscanf_s(s, _T("%d,%d"), &x, &y);
-		move(x*DEGREE, y*DEGREE);
+		checkUserInput(s, 63, R"spl(((-?[1-9]\d*|0)(\.\d*[1-9])?|-0\.\d*[1-9]),((-?[1-9]\d*|0)(\.\d*[1-9])?|-0\.\d*[1-9]))spl",
+			_T("Input offset on x and y axis:\nInvalid user input!"),_T("CrappyCAD"), _T("For example:\t0,0"));
+		_stscanf_s(s, _T("%lf,%lf"), &x, &y);
+		move(int(x*DEGREE), int(y*DEGREE));
 
 	}
 	else

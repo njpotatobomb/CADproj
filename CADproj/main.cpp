@@ -250,16 +250,16 @@ int main()
 							if(InputBox(nullptr,63,_T("Do you want to manually input offset data?\nPress \"Yes\" to continue,\"No\" to drag with mouse."),
 								_T("CrappyCAD"),_T("Do not input here,I kown it is ugly"),0,0,false))
 							{
-								int x=0,y=0;
+								double x=0,y=0;
 								TCHAR s[63];
 
 								memset(s,0,63*sizeof(TCHAR));
 								InputBox(s,63,_T("Input offset on x and y axis:"),_T("CrappyCAD"),_T("For example:\t0,0"),0,0,false);
-								checkUserInput(s,63,"(-?[1-9][0-9]*|0),(-?[1-9][0-9]*|0)",_T("Input offset on x and y axis:\nInvalid user input!"),
-									_T("CrappyCAD"),_T("For example:\t0,0"));
-								_stscanf_s(s,_T("%d,%d"),&x,&y);
+								checkUserInput(s,63,R"spl(((-?[1-9]\d*|0)(\.\d*[1-9])?|-0\.\d*[1-9]),((-?[1-9]\d*|0)(\.\d*[1-9])?|-0\.\d*[1-9]))spl",
+									_T("Input offset on x and y axis:\nInvalid user input!"),_T("CrappyCAD"),_T("For example:\t0,0"));
+								_stscanf_s(s,_T("%lf,%lf"),&x,&y);
 								for(auto& it:objects)
-									it->move(x,y);
+									it->move(int(x*DEGREE),int(y*DEGREE));
 							}else
 							{
 								CPoint tmporigin(0,0);
