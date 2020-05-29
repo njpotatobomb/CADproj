@@ -639,7 +639,7 @@ void checkUserInput(TCHAR* s,int nMaxCount,const char* regexp,LPCTSTR pPrompt,LP
 			break;
 		} else
 		{
-			memset(s,0,nMaxCount*sizeof(TCHAR));
+			delete[] str;
 			InputBox(s,nMaxCount,pPrompt,pTitle,pDefault,0,0,true);
 		}
 
