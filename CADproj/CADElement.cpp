@@ -303,10 +303,10 @@ void CADLine::calculateOrigin()
 	origin=CPoint((start.x+end.x)/2,(start.y+end.y)/2);
 }
 
-void CADLine::open(int pid,ifstream& os)
+void CADLine::open(int pid,ifstream& fin)
 {
 	id = pid;
-	os >> start.x >> start.y >> end.x >> end.y;
+	fin >> start.x >> start.y >> end.x >> end.y;
 	calculateOrigin();
 	draw();
 }
@@ -543,10 +543,10 @@ void CADRectangle::calculateOrigin()
 	origin = CPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 }
 
-void CADRectangle::open(int pid, ifstream& os)
+void CADRectangle::open(int pid, ifstream& fin)
 {
 	id = pid;
-	os>> start.x >> start.y >> end.x >> end.y;
+	fin>> start.x >> start.y >> end.x >> end.y;
 	calculateOrigin();
 	draw();
 }
@@ -779,10 +779,10 @@ void CADCircle::calculateOrigin()
 	origin = center;
 }
 
-void CADCircle::open(int pid,ifstream& os)
+void CADCircle::open(int pid,ifstream& fin)
 {
 	id = pid;
-	os >> center.x >> center.y >> radius;
+	fin >> center.x >> center.y >> radius;
 	calculateOrigin();
 	draw();
 }
@@ -1090,14 +1090,14 @@ void CADPolygon::save(ofstream& fout)
 	fout << endl;
 }
 
-void CADPolygon::open(int pid, ifstream& os)
+void CADPolygon::open(int pid, ifstream& fin)
 {
 	int tempnum = 0,tempx=0,tempy=0;
 	id = pid;
-	os >> tempnum;
+	fin >> tempnum;
 	for (int i = 0; i < tempnum; i++)
 	{
-		os >> tempx >> tempy;
+		fin >> tempx >> tempy;
 		PolygonPoints.push_back(CPoint(tempx, tempy));
 	}
 	calculateOrigin();

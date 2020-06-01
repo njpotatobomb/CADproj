@@ -20,7 +20,7 @@ public:
 	//virtual void modify()=0;
 	virtual void save(ofstream& fout)=0;
 	virtual void calculateOrigin()=0;
-	virtual void open(int pid,ifstream& os)=0;
+	virtual void open(int pid,ifstream& fin)=0;
 
 	void setMouseOnFlag(bool state);
 	void setSelectedFlag(bool state);
@@ -52,7 +52,7 @@ public:
 	//void modify();
 	void save(ofstream& fout);
 	void calculateOrigin();
-	void open(int pid,ifstream& os);
+	void open(int pid,ifstream& fin);
 
 protected:
 	CPoint start,end;
@@ -74,7 +74,7 @@ public:
 	//void modify();
 	void save(ofstream& fout);
 	void calculateOrigin();
-	void open(int pid,ifstream& os);
+	void open(int pid,ifstream& fin);
 
 protected:
 	CPoint start, end;
@@ -95,7 +95,7 @@ public:
 	//void modify();
 	void save(ofstream& fout);
 	void calculateOrigin();
-	void open(int pid,ifstream& os);
+	void open(int pid,ifstream& fin);
 
 protected:
 	CPoint center;
@@ -117,7 +117,7 @@ public:
 	//void modify();
 	void save(ofstream& fout);
 	void calculateOrigin();
-	void open(int pid, ifstream& os);
+	void open(int pid, ifstream& fin);
 
 protected:
 	vector<CPoint> PolygonPoints;

@@ -123,7 +123,7 @@ int main()
 							InputBox(nullptr,63,_T(
 								"CrappyCAD project\n"
 								"Author:SadCloud55&&njpotatobomb\n"
-								"May 13~26,2020\n"
+								"May 13~June 1,2020\n"
 								"View sorce code at https://github.com/njpotatobomb/CADproj"
 							));
 
